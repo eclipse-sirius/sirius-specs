@@ -23,7 +23,7 @@ Some initial remarks and open questions:
 * We will only consider files inside opened projects. If a project in the workspace is currently closed, we will not open it to look inside.
 * While this is not strictly in the scope of the ticket, we should if possible also support the move/renaming of Sirius's own files, for example when renaming an `aird` fragment.
 * Should we handle the deletion of semantic model files, and how?
-* The reliability of the changes is a major concern. Under no circumstances should the changes we make break the Sirius models. More precisely, we should not break them more than the current situation of doing nothing does.
+* The reliability of the changes is a major concern. Under no circumstances should the changes we make break the Sirius models. More precisely, we should not break them more than the current situation of doing nothing does. We may decide to make the feature disabled by default ("opt-in") in the first released version if we're not completely confident. One risk mitigation strategy to evaluate would be to make the changes on Sirius model files in a way that can be reverted using the standard Eclipse local history in case of problem.
 
 ## Detailed Specification
 
@@ -35,11 +35,11 @@ This section contains the "meat" of the document. Its structure will depend on t
 
 ## Backward Compatibility and Migration Paths
 
-Every one of the sections below should be present. Even if there is no corresponding change (for example no API change), it should exist to mention explicitly "This evolution does not change any API."
+This evolution may add new APIs but should not create any backward compatibility.
 
 ### Metamodel Changes
 
-Document any change to the Sirius metamodel. If they require a migration operation, mention it and describe the general idea of how migration process. If any information can be lost during the migration, mention it clearly. If validation rules must be added/modified, mention it also.
+No metamodel change should be necessary.
   
 ### API Changes
 
