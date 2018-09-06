@@ -15,7 +15,15 @@ _Relevant tickets_:
 
 ## Introduction
 
-This section should contain a summary of the proposed evolution, including why it is needed. Ideally it should be self-contained so that non-developers can get a quick overview of the evolution without reading the detailed specification. 
+The goal is to automatically adjust Sirius model files present in the workspace (`.aird` and `.srm` models) when a semantic resource they reference is renamed or moved by the user. Currently, when a Sirius model `representations.aird` references for example a semantic model `a.ecore`, it stores these references as URIs. If the end-user moves or renames the file into `b.ecore`, all these references are broken. The objective of this evolution is to correctly detect these situations and update the Sirius models which contain references to the old obsolete path to point to the new one.
+
+Some initial remarks and open questions:
+* We will only support file moves/renaming which are performed directly through the Eclipse workspace. If the end user moves of renames the files using direct file-system operations outside of Eclipse, we will not do anything more than currently.
+* We will only consider the impact on Sirius's own files at the moment (i.e. `.aird` and `.srm` models). Semantic models can have references between themselves, and ideally they should be adjusted too, but this is not part of the initial scope of this ticket. Depending on how things unfold, we may try to support this in the future.
+* We will only consider files inside opened projects. If a project in the workspace is currently closed, we will not open it to look inside.
+* While this is not strictly in the scope of the ticket, we should if possible also support the move/renaming of Sirius's own files, for example when renaming an `aird` fragment.
+* Should we handle the deletion of semantic model files, and how?
+* The reliability of the changes is a major concern. Under no circumstances should the changes we make break the Sirius models. More precisely, we should not break them more than the current situation of doing nothing does.
 
 ## Detailed Specification
 
