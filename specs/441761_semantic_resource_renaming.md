@@ -1,4 +1,4 @@
-# Sirius Evolution Specification: Hadle rename/move of semantic resources
+# Sirius Evolution: Handle rename/move of semantic resources
 
 ## Preamble
 
