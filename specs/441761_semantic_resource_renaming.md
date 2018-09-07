@@ -27,11 +27,36 @@ Some initial remarks and open questions:
 
 ## Detailed Specification
 
-This section contains the "meat" of the document. Its structure will depend on the evolution itself, but it should contain:
+## Description 
 
-* a clear description of the objective, i.e. why the evolution is needed.
-* a justification of the approach chosen. If other approaches were considered and rejected, document it for future reference.
-* limits: things that are out of the scope of the evolution.
+The goal of this new feature is to update Sirius models after rename or move semantic resource from the workspace. For now, rename is effective but induce proxies creation in Sirius models. That is why this new feature is major for user who want to rename their semantic resources without broken Sirius models.
+
+In a first part , this support is focused on Sirius models (i.e. `.aird` and `.srm` models) to simplify implementation and reduce complexity. In these models, proxies should be repaired after URI changes of object due to semantic resource rename or move. Semantic resource attached to Sirius models should also be update in order to referenced new semantic resource.
+
+Semantic resource rename or move is only support from workspace. 
+
+## Scope
+
+The main difficulty is to clarify the scope of this feature :
+* open/closed project,
+* modeling/no modeling project,
+* load/unload session,
+* dirty/clean session.
+
+According to the defined scope, a popup can appear in order to give choice to user to close/save session before rename to avoid errors during rename process. 
+
+## Approach
+
+In order to rename semantic resource, an extension point _org.eclipse.ltk.core.refactoring.renameParticipants_ can be used. This extension will be configured with a new class that provides the participant implementation required for rename. For moving semantic resource, an other extension point _org.eclipse.ltk.core.refactoring.moveParticipants_ is available.
+
+In these participant classes, two different approaches can be used to make this feature possible.
+
+* The first one is to read/browse Sirius model file and replace all occurences of the semantic resource before rename by the new name. Then you just have to save the resource. The main drawback of this approach is the use of some semantic resource with the same name but not localized in the same place. So risk is that you replace occurences of semantic resource with the same name but not concerned by the rename process.   
+
+* The second one is to load Sirius resource and collect all proxies. Then you set proxies URI with the new URI of semantic resource renamed. Finally, you save the resource. The main drawback of this second approach is time. Indeed loading resource to collect proxies can be extremely time consuming. 
+
+In both case, we need a new service which is the angular stone of this feature. Indeed these approach can be executed only if we know which Sirius models are impacted by the rename of semantic resource. 
+A first work will consist to create this service which verify if a Sirius model reference the semantic resource in the process of rename. Thanks to the new service, we will be able to determine which Sirius models reference A semantic resource when I rename A into B.
 
 ## Backward Compatibility and Migration Paths
 
@@ -43,21 +68,28 @@ No metamodel change should be necessary.
   
 ### API Changes
 
-List every API addition, removal and deprecation. For each removal and deprecation, indicate the migration path for existing code. If you plan to depcrecate an existing API, it is your responsibility to update all our existing code to use the alternative you provide; take this into account in the estimation for the task.
+No change on existing API.
 
-Be careful when designing new APIs to provide all the appropriate "hooks" for users to customize the feature's behavior. In particular, think carefully about which of the methods you provide should be @protected@ instead of @private@ so that users can override some of the default behavior. Do no hesitate to discuss this wth the users  who requested the feature to make sure he will be able to implement the customizations he needs.
+A new API will be added and correspond to the service describe in the Approach part. This new API will determine if Sirius model referenced a given semantic resource.
 
 ### User Interface Changes
 
-List every user-visible change in the interface. Here "user" includes not only end-users but also specifiers which use the VSM editor.
+No significant user interface changes. A popup can appears to propose user to close/save resources before rename.
 
 ### Documentation Changes
 
-List every documentation needing an update here, starting by the New and Noteworthy documentation.
+* This new Rename feature will be documented.
+* New Api to know dependence of Sirius models with semantic resource wiil appears in release notes.
 
 ## Tests and Non-regression strategy
 
-This part of the document should describe the strategy to use to correctly test the evolution and guarantee the non-regression.  
+JUNIT tests should be add to test the new API :
+* with Sirius model null,
+* with Sirius model without semantic resource referenced,
+* with Sirius model with semantic resource referenced but not the given semantic resource,
+* with Sirius model with semantic resource referenced and the given semantic resource,
+
+JUNIT test should also be add to test the rename feature after specified the scope.  
 
 ## Implementation choices and tradeoffs
 
