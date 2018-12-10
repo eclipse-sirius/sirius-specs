@@ -32,6 +32,10 @@ This section contains the "meat" of the document. Its structure will depend on t
 * a justification of the approach chosen. If other approaches were considered and rejected, document it for future reference.
 * limits: things that are out of the scope of the evolution.
 
+## RCP/Web Flavors Compatibility and Interoperability
+
+This section clearly states to which extent the feature will be present in / the change impacts the RCP flavor, the Web flavor, or both. If it supports both, the section should describe the technical impact of doing so. For example it may imply refactoring some existing code to make its core behavior available on both flavors, or abstracting a common API for which two separate implementations will be needed.
+
 ## Backward Compatibility and Migration Paths
 
 Every one of the sections below should be present. Even if there is no corresponding change (for example no API change), it should exist to mention explicitly "This evolution does not change any API."
