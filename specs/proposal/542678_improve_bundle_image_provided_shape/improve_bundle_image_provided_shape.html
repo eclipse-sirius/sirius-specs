@@ -30,36 +30,34 @@
 			<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=542678">Improve the bundle image provided shape extension point</a>
 		</p>
 		<h2 id="Introduction">Introduction</h2>
-		<p>The goal of this feature is to improve the degree of customization of the bundle image provided shape extension point to be compatible with more SVG tags. The current mechanism expects to find a few types of tags with a specific sets of keyword. We need to be able to specify more information in the extension point in order to be able to manage more various SVG tags.</p>
+		<p>The goal of this feature is to improve the degree of customization of the 
+			<a href="https://www.eclipse.org/sirius/doc/developer/extensions-provide_custom_bundled_image_shape.html">bundle image provided shape extension point</a> to be compatible with more SVG tags. The current mechanism expects to find a few types of tags with a specific sets of keyword. We need to be able to specify more information in the extension point in order to be able to manage more various SVG tags.
+		</p>
 		<h2 id="DetailedSpecification">Detailed Specification</h2>
 		<p>Currently, the extension point can modify three properties of an SVG:
 			<br/>- the color of the shape;
 			<br/>- the color of the border of the shape;
 			<br/>- the width of the border of the shape.
 		</p>
-		<p>For each property, the extension point is used to point the id of the tags and its attribute the manages the property. For example, with the donut.svg sample, the color of the shape is specified in a tag with the id &#171;stop8224-2&#187; and the color is set in an attribute &#171;style&#187;. The &#171;style&#187; attribute is in fact a collection of attributes and among them &#171;stop-color&#187; holds the color value (example: 
-			<em>style="stop-color:#ffffff;stop-opacity:1;"</em>). This &#171;stop-color&#187; sub-attribute is specific to a &#171;LinearGradient&#187; tag and cannot be specified in the extension point. It is currently the attribute that Sirius is expected to find.
+		<p>For each property, the extension point is used to point the id of the tags and its attribute that manages the property. For example, with the donut.svg sample, the color of the shape is specified in a tag with the id &#171;stop8224-2&#187; and the color is set in an attribute &#171;style&#187;. The &#171;style&#187; attribute is in fact a collection of attributes and among them &#171;stop-color&#187; holds the color value (example: 
+			<code>style="stop-color:#ffffff;stop-opacity:1;"</code>). This &#171;stop-color&#187; sub-attribute is specific to a &#171;LinearGradient&#187; tag and cannot be specified in the extension point. It is currently the attribute that Sirius is expected to find.
 			<br/>This is a limitation of this extension point as this way to set a color in a tag can be different in other tags. For instance, an ellipse tag also has a &#171;style&#187; attribute and is a collection of sub-attributes (multi-valued attribute). However, this time the color is held by a sub-attributes named &#171;fill&#187; (example: 
-			<em>style="fill:#ffffff;fill-opacity:1;..."</em>).
+			<code>style="fill:#ffffff;fill-opacity:1;..."</code>).
 			<br/>Furthermore, we cannot assume to always have to look for a sub-attributes. The &#171;circle&#187; tag defines its color using a &#171;fill&#187; attribute with no sub-attributes (a single-valued attribute) but directly the color code (example: 
-			<em>fill="#fff"</em>).
+			<code>fill="#fff"</code>).
 		</p>
 		<p>The extension point should be able to specify the sub-attribute that should be edited. If a sub-attribute is not defined in the extension point, then Sirius should consider that this is not a multi-valued attribute (the case of the last example) instead of assuming to look for a specific sub-attribute. </p>
 		<h2 id="BackwardCompatibilityandMigrationPaths">Backward Compatibility and Migration Paths</h2>
-		<p>A migration will be needed in order to add in the extension point the sub-attribute that were expected to be found such as: 
-			<em>stop-color</em>, 
-			<em>stroke</em> and 
-			<em>stroke-width</em>.
-		</p>
+		<p>There will be no migration but we will need to create a new extension point in order to keep the ancient one working. The older version will be needed to be marked as obsolete.</p>
 		<h3 id="MetamodelChanges">Metamodel Changes</h3>
 		<p>There is no metamodel change for this feature.</p>
 		<h3 id="APIChanges">API Changes</h3>
 		<p>This feature uses the existing API and does not need new API or API changes.</p>
 		<h3 id="UserInterfaceChanges">User Interface Changes</h3>
 		<p>The extension point tags 
-			<em>colorAttribute</em>, 
-			<em>borderColorAttribute</em> and 
-			<i>borderSizeAttribute</i> will now provide a sub attribute (not mandatory).
+			<code>colorAttribute</code>, 
+			<code>borderColorAttribute</code> and 
+			<code>borderSizeAttribute</code> will now provide a sub attribute (not mandatory).
 		</p>
 		<h3 id="DocumentationChanges">Documentation Changes</h3>
 		<ul>
@@ -69,9 +67,11 @@
 			</li>
 		</ul>
 		<h2 id="TestsandNonregressionstrategy">Tests and Non-regression strategy</h2>
-		<p>We will need to test the color, border color and border size with two new sample:
+		<p>Tests on the older version of the extension point need to be still working after this enhancement.</p>
+		<p>For the new extension point, we will need to test the color, border color and border size with two new sample:
 			<br/>- one with multi-valued attributes where the sub-attribute is not the previously default one.
-			<br/>- one with a single-valued attributes (example: <circle id="circle" cx="250" cy="250" r="210" fill="#fff" stroke="#000" stroke-width="8"/>).
+			<br/>- one with a single-valued attributes (example: 
+			<code>&lt;circle id="circle" cx="250" cy="250" r="210" fill="#fff" stroke="#000" stroke-width="8"/&gt;</code>).
 		</p>
 		<p>As this needs to be visually confirmed, I think it can&#8217;t be done with JUnit SWTBot, but manually (in the acceptance tests).</p>
 	</body>
