@@ -7,6 +7,7 @@ _Summary_: The goal of this feature is to improve the degree of customization of
 
 |_. Version |_. Status |_. Date        |_. Authors |_. Changes |
 | v0.1        | DRAFT    | 2018-12-11 | smonnier    | Initial version. |
+| v0.2        | PROPOSAL    | 2018-12-14 | smonnier    | Initial version. |
 
 _Relevant tickets_: "Improve the bundle image provided shape extension point":https://bugs.eclipse.org/bugs/show_bug.cgi?id=542678
 
@@ -56,7 +57,7 @@ h2. Tests and Non-regression strategy
 
 Tests on the older version of the extension point need to be still working after this enhancement.
 
-For the new extension point, we will need to test the color, border color and border size with two new sample (circle.svg and circle2.svg and the old one (donut.svg):
+For the new extension point, we will need to test the color, border color and border size with three samples (circle.svg and circle2.svg and the old one donut.svg):
 - one with multi-valued attributes where the sub-attribute is not the previously default one.
 - one with a single-valued attributes (example: @<circle id="circle" cx="250" cy="250" r="210" fill="#fff" stroke="#000" stroke-width="8"/>@).
 - one with donut.svg to display the difference with old extension point and make sure it also work. 
@@ -66,8 +67,8 @@ As this needs to be visually confirmed, I think it can't be done with JUnit SWTB
 h2. Implementation choices and tradeoffs
 
 The new extension point will handle both single-valued and multi-valued attribute without assuming the named of the properties. However, it will not be able to manage attributes or properties managed by several tags like:
-<circle id="circle" cx="250" cy="250" r="210" stroke="#000" stroke-width="8"/>
+<specificFigure id="circle" cx="250" cy="250" r="210" stroke="#000" stroke-width="8"/>
 	<color>#fff</color>
-</circle>
+</specificFigure>
 
 Furthermore, this implementation expects that the properties for inner color, border color and border width are each defined in a single tag/attribute. For instance, it will not be able to manage a border that would be defined by two half-circles tags in the SVG file. 
