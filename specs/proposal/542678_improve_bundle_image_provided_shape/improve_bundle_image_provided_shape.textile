@@ -1,0 +1,74 @@
+h1. Viewpoint Evolution Specification: improve bundle image provided shape extension point
+
+
+h2. Preamble
+
+_Summary_: The goal of this feature is to improve the degree of customization of the bundle image provided shape extension point to be compatible with more SVG tags.
+
+|_. Version |_. Status |_. Date        |_. Authors |_. Changes |
+| v0.1        | DRAFT    | 2018-12-11 | smonnier    | Initial version. |
+| v0.2        | PROPOSAL    | 2018-12-14 | smonnier    | Initial version. |
+
+_Relevant tickets_: "Improve the bundle image provided shape extension point":https://bugs.eclipse.org/bugs/show_bug.cgi?id=542678
+
+h2. Introduction
+
+The goal of this feature is to provide a new extension point that will have a higher the degree of customization than "the current bundle image provided shape extension point":https://www.eclipse.org/sirius/doc/developer/extensions-provide_custom_bundled_image_shape.html (This documentation and extension point will be marked as deprecated) to be compatible with more SVG tags. The current mechanism expects to find a few types of tags with a specific sets of keyword. We need to be able to specify more information in the extension point in order to be able to manage more various SVG tags.
+
+h2. Detailed Specification
+
+Currently, the extension point can modify three properties of an SVG:
+- the color of the shape;
+- the color of the border of the shape;
+- the width of the border of the shape.
+
+For each property, the extension point is used to point the id of the tag and its attribute that manages the property. For example, with the donut.svg sample, the color of the shape is specified in a tag with the id "stop8224-2" and the color is set in an attribute "style". The "style" attribute is in fact a collection of attributes and among them "stop-color" holds the color value (example in the attached donut.svg: @style="stop-color:#ffffff;stop-opacity:1;"@). This "stop-color" sub-attribute is specific to a "LinearGradient" tag and cannot be specified in the extension point. It is currently the attribute that Sirius is expected to find. This explains why in the current extension point, to change this attribute, we only need the following declaration:
+@<colorIdentifier colorIdentifier="stop8224-2"></colorIdentifier>@
+@<colorAttribute colorAttribute="style"></colorAttribute>@
+        
+This is a limitation of this extension point as this way to set a color in a tag can be different in other tags. For instance, an ellipse tag also has a "style" attribute and is a collection of sub-attributes (multi-valued attribute). However, this time the color is held by a sub-attributes named "fill" (example: @style="fill:#ffffff;fill-opacity:1;..."@).
+@<colorAttribute colorAttribute="style/fill"></colorAttribute>@ or @<colorAttribute colorAttribute="style" colorProperty="fill"></colorAttribute>@ 
+
+Furthermore, we cannot assume to always have to look for a sub-attributes. The "circle" tag defines its color using a "fill" attribute with no sub-attributes (a single-valued attribute) but directly the color code (example: @fill="#fff"@). In this case, we need to interpret @<colorAttribute colorAttribute="fill"></colorAttribute>@ as a single valued attribute. This difference on how are handled single-valued and multiple-valued attributes is the cause to create a new extension point (and set the old one as deprecated). The extension point should be able to specify the sub-attribute that should be edited. If a sub-attribute is not defined in the extension point, then Sirius should consider that this is not a multi-valued attribute (the case of the last example) instead of assuming to look for a specific sub-attribute. 
+
+h2. Backward Compatibility and Migration Paths
+
+There will be no migration but we will need to create a new extension point in order to keep the ancient one working. The older version will be needed to be marked as obsolete.
+
+h3. Metamodel Changes
+
+There is no metamodel change for this feature.
+  
+h3. API Changes
+
+This feature uses the existing API and does not need new API or API changes.
+
+h3. User Interface Changes
+
+The extension point tags @colorAttribute@, @borderColorAttribute@ and @borderSizeAttribute@ will now provide a sub attribute (not mandatory).
+
+h3. Documentation Changes
+
+* Update New and Noteworthy documentation.
+* In developer documentation, the new extension point will need to be presented as is the "current provided bundled image shape extension point":https://www.eclipse.org/sirius/doc/developer/extensions-provide_custom_bundled_image_shape.html  
+* In developer documentation, the documentation of the "provided bundled image shape extension point":https://www.eclipse.org/sirius/doc/developer/extensions-provide_custom_bundled_image_shape.html needs to be marked as obsolete and have a link to the new extension point.
+
+h2. Tests and Non-regression strategy
+
+Tests on the older version of the extension point need to be still working after this enhancement.
+
+For the new extension point, we will need to test the color, border color and border size with three samples (circle.svg and circle2.svg and the old one donut.svg):
+- one with multi-valued attributes where the sub-attribute is not the previously default one.
+- one with a single-valued attributes (example: @<circle id="circle" cx="250" cy="250" r="210" fill="#fff" stroke="#000" stroke-width="8"/>@).
+- one with donut.svg to display the difference with old extension point and make sure it also work. 
+
+As this needs to be visually confirmed, I think it can't be done with JUnit SWTBot, but manually (in the acceptance tests).
+
+h2. Implementation choices and tradeoffs
+
+The new extension point will handle both single-valued and multi-valued attribute without assuming the named of the properties. However, it will not be able to manage attributes or properties managed by several tags like:
+<specificFigure id="circle" cx="250" cy="250" r="210" stroke="#000" stroke-width="8"/>
+	<color>#fff</color>
+</specificFigure>
+
+Furthermore, this implementation expects that the properties for inner color, border color and border width are each defined in a single tag/attribute. For instance, it will not be able to manage a border that would be defined by two half-circles tags in the SVG file. 
