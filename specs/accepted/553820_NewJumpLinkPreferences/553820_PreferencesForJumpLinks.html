@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	</head>
+	<body>
+		<h1 id="sirius-evolution-specification-add-preferences-for-jump-links-properties">Sirius Evolution Specification: Add preferences for Jump links properties</h1>
+		<h2 id="preamble">Preamble</h2>
+		<p>
+			<em>Summary</em>: The goal of this feature is to allow end-user to initialize jump links properties of new edge with specific default values. These properties are: the status and the type of the jump links, and the reverse option.
+		</p>
+		<p>| Version | Status    | Date       | Authors   | Changes                         |
+			|---------|-----------|------------|-----------|---------------------------------|
+			|    v0.1 |  DRAFT    | 2019-12-05 |    lredor | Initial version.                |
+			|    v0.2 |  DRAFT    | 2019-12-06 |    lredor | Change target preference page   |
+			|    v0.3 |  ACCEPTED | 2020-01-17 |    lredor | No change                       |</p>
+		<p>
+			<em>Relevant tickets</em>:
+		</p>
+		<ul>
+			<li>
+				<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=553820">Bug 553820 - Add preferences for Jump links properties</a>
+			</li>
+		</ul>
+		<h2 id="introduction">Introduction</h2>
+		<p>Currently, the end-user can define a default value for the routing style of all new edges by using the preference available in 
+			<code>Preferences&gt;Sirius&gt;Sirius Diagram&gt;Connections</code>:
+		</p>
+		<p>
+			<img alt="Connection preferences page" border="0" src="images/connectionPreferencesPage.png"/>
+		</p>
+		<p>The goal of this feature is to add new preferences for all properties corresponding to jump links. Here is these properties (visible in the Appearance tab in the Properties view when an edge is selected): </p>
+		<p>
+			<img alt="Properties view" border="0" src="images/expectedPropertiesView.png"/>
+		</p>
+		<h2 id="detailed-specification">Detailed Specification</h2>
+		<p>The new preferences will be displayed like this:</p>
+		<p>
+			<img alt="Target preference page" border="0" src="images/targetPreferencePage.png"/>
+		</p>
+		<p>These preferences values will be considered in 
+			<code>org.eclipse.sirius.diagram.ui.internal.view.factories.DEdgeViewFactory</code> during the creation of new edge.
+			Indeed, unlike the existing "Line style" preference, the new preferences will not be considered in the method 
+			<code>org.eclipse.sirius.diagram.business.internal.metamodel.helper.StyleHelper.updateEdgeStyle(EdgeStyleDescription, EdgeStyle, Option&lt;EdgeStyle&gt;)</code>, as the jump link properties are stored in the GMF part of the model and not in the Sirius part of the model.
+		</p>
+		<p>If the end-user launches the action "Reset style properties by default values", the end-user jump link preferences must be used instead of the default Sirius values, ie:</p>
+		<ul>
+			<li>Status = None</li>
+			<li>Type = Semi-Circle</li>
+			<li>Reverse jump links = false</li>
+		</ul>
+		<h2 id="rcp-web-flavors-compatibility-and-interoperability">RCP/Web Flavors Compatibility and Interoperability</h2>
+		<p>This feature will be available only in RCP as it is based on existing GMF properties.</p>
+		<h2 id="backward-compatibility-and-migration-paths">Backward Compatibility and Migration Paths</h2>
+		<p>There is no migration. This feature only allows to initialize default values that the end-user can already change manually for each edge.</p>
+		<h3 id="metamodel-changes">Metamodel Changes</h3>
+		<p>No metamodel change.</p>
+		<h3 id="api-changes">API Changes</h3>
+		<p>New APIs will be added in 
+			<code>org.eclipse.sirius.diagram.tools.api.preferences.SiriusDiagramCorePreferences</code>. The existing 
+			<code>PREF_ENABLE_OVERRIDE</code> will probably be renamed according to new preferences (not mandatory, at least marked at deprecated).
+		</p>
+		<h3 id="user-interface-changes">User Interface Changes</h3>
+		<p>The changes concern only the preference page described above.
+			They will be done in
+			<code>org.eclipse.sirius.diagram.ui.internal.preferences.DiagramConnectionsPreferencePage</code>.
+		</p>
+		<h3 id="documentation-changes">Documentation Changes</h3>
+		<p>These new preferences must be documented in the New and Noteworthy documentation.
+			There is currently no Sirius documentation about default line style value. A full chapter concerning the line style default value and new jump link preferences must be added (in the section "Sirius/Sirius User Manual/Diagrams/Preferences").</p>
+		<h2 id="tests-and-non-regression-strategy">Tests and Non-regression strategy</h2>
+		<p>The test class org.eclipse.sirius.tests.unit.api.routing.EdgeRoutingStyleEndUserOverrideTest can be completed with the new preferences.</p>
+		<h2 id="implementation-choices-and-tradeoffs">Implementation choices and tradeoffs</h2>
+	</body>
+</html>
