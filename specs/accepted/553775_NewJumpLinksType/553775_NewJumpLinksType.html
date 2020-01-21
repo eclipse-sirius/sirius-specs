@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	</head>
+	<body>
+		<h1 id="sirius-evolution-specification-new-jump-links-type">Sirius Evolution Specification: New jump links type</h1>
+		<h2 id="preamble">Preamble</h2>
+		<p>
+			<em>Summary</em>: Currently, Sirius proposes 3 types of jump links: "Semi-Circle", "Square" and "Chamfered". The goal of this feature is to offer a new type of jump links named "Tunnel".
+		</p>
+		<p>| Version | Status    | Date       | Authors   | Changes             |
+			|---------|-----------|------------|-----------|---------------------|
+			|    v0.1 |  DRAFT    | 2019-12-04 |   lredor | Initial version.     |
+			|    v0.3 |  ACCEPTED | 2020-01-17 |   lredor | Changes after review |</p>
+		<p>
+			<em>Relevant tickets</em>:
+		</p>
+		<ul>
+			<li>
+				<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=553775">Bug 553775 - Provide a new type of jump links named "Tunnel"</a>: Sirius issue
+			</li>
+			<li>
+				<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=553776">Bug 553776 - Provide a new type of jump links named "Tunnel"</a>: Corresponding GMF issue as main part of this feature will be done directly in GMF.
+			</li>
+		</ul>
+		<h2 id="introduction">Introduction</h2>
+		<p>Currently, when you select an edge, you can activate the "Jump Links" feature through the Sirius Appearance tab of the properties view by changing the jump links status.</p>
+		<p>
+			<img alt="current properties view" border="0" src="images/jumpLinksPropertiesView.png"/>
+		</p>
+		<p>
+			<strong>Status:</strong>
+		</p>
+		<ul>
+			<li>None: The jump links feature is disabled.</li>
+			<li>All: A jump link is added for each intersection with another edge.</li>
+			<li>Below: A jump link is added for each intersection with another edge that is below the current edge</li>
+			<li>Above: A jump link is added for each intersection with another edge that is above the current edge</li>
+		</ul>
+		<p>
+			<strong>Type</strong>
+			There are currently 3 types of jump link:
+		</p>
+		<ul>
+			<li>Semi-Circle</li>
+		</ul>
+		<p>
+			<img alt="Semi-Circle drawing" border="0" src="images/semiCircleJumpLink.png"/>
+
+			<img alt="Oblique Semi-Circle drawing" border="0" src="images/obliqueSemiCircleJumpLink.png"/>
+		</p>
+		<ul>
+			<li>Square</li>
+		</ul>
+		<p>
+			<img alt="Square drawing" border="0" src="images/squareJumpLink.png"/>
+
+			<img alt="Oblique Square drawing" border="0" src="images/obliqueSquareJumpLink.png"/>
+		</p>
+		<ul>
+			<li>Chamfered</li>
+		</ul>
+		<p>
+			<img alt="Chamfered drawing" border="0" src="images/chamferedJumpLink.png"/>
+
+			<img alt="Oblique Chamfered drawing" border="0" src="images/obliqueChamferedJumpLink.png"/>
+		</p>
+		<p>The "Reverse jump links" only changes the side where the "jump" is drawn:</p>
+		<p>
+			<img alt="Semi-Circle drawing" border="0" src="images/reverseSemiCircleJumpLink.png"/>
+
+			<img alt="Square drawing" border="0" src="images/reverseSquareJumpLink.png"/>
+
+			<img alt="Chamfered drawing" border="0" src="images/reverseChamferedJumpLink.png"/>
+		</p>
+		<h2 id="detailed-specification">Detailed Specification</h2>
+		<p>The goal of this feature is to offer a new type of jump links named "Tunnel". This new type will complete the 3 existing types in the properties view:</p>
+		<p>
+			<img alt="Expected properties view" border="0" src="images/expectedPropertiesView.png"/>
+		</p>
+		<p>The change concerning properties view will be done in 
+			<code>org.eclipse.gmf.runtime.diagram.ui.properties.sections.appearance.ConnectionAppearancePropertySection</code> inherited by 
+			<code>org.eclipse.sirius.diagram.ui.tools.internal.properties.DiagramConnectionAppearancePropertySection</code>.
+		</p>
+		<p>Only a specific drawing will be necessary for this new type. For this type, we let a blank instead of the "semi-circle", "chamfered" or "square". To have a better visual aspect the blank will correspond to a half of a classical "jump".</p>
+		<p>
+			<img alt="Tunnel drawing" border="0" src="images/tunnelJumpLink.png"/>
+
+			<img alt="Oblique Tunnel drawing" border="0" src="images/obliqueTunnelJumpLink.png"/>
+		</p>
+		<p>This drawing will be handled in 
+			<code>org.eclipse.gmf.runtime.draw2d.ui.figures.PolylineConnectionEx</code> through method 
+			<code>outlineShape(Graphics)</code>.
+		</p>
+		<p>All the behaviors will be the same than existing types. Here are some examples (list not necessarily exhaustive):</p>
+		<ul>
+			<li>Feature compatible with all routing: Oblique, Rectilinear and Tree.</li>
+			<li>Property specific for each edge</li>
+			<li>Style stored in the graphical model (aird file)</li>
+		</ul>
+		<p>To resume, the main part of this feature will be done directly in GMF:</p>
+		<ul>
+			<li>GMF Notation for the meta-model change</li>
+			<li>GMF Runtime for the properties view and the figure</li>
+		</ul>
+		<h2 id="rcp-web-flavors-compatibility-and-interoperability">RCP/Web Flavors Compatibility and Interoperability</h2>
+		<p>This feature will be available only in RCP as it is massively based on an existing GMF feature.</p>
+		<h2 id="backward-compatibility-and-migration-paths">Backward Compatibility and Migration Paths</h2>
+		<p>Two new version of GMF (one for notation, one for runtime) will be released for this feature. So Sirius will have to consume these new versions.</p>
+		<p>No migration is necessary. But as soon as the new value is used, the model can not be opened with a previous version of Sirius. A migration participant that do nothing will be added to "change" the aird file version.</p>
+		<h3 id="metamodel-changes">Metamodel Changes</h3>
+		<p>The Sirius metamodel will not be changed. The GMF metamodel will be changed to add a new Enum value to the type 
+			<code>org.eclipse.gmf.runtime.notation.JumpLinkType</code>:
+		</p>
+		<p>
+			<code>&lt;eClassifiers xsi:type="ecore:EEnum" name="JumpLinkType"&gt;</code>
+		</p>
+		<p>
+			<code>&lt;eLiterals name="Semicircle"/&gt;</code>
+		</p>
+		<p>
+			<code>&lt;eLiterals name="Square" value="1"/&gt;</code>
+		</p>
+		<p>
+			<code>&lt;eLiterals name="Chamfered" value="2"/&gt;</code>
+		</p>
+		<p>
+			<code>++&lt;eLiterals name="Tunnel" value="3"/&gt;</code>
+		</p>
+		<p>
+			<code>&lt;/eClassifiers&gt;</code>
+		</p>
+		<p>A generation for the GMF CDO native part will be necessary. We must also consider the GMF CDO implementation hosted in the CDO repository. It will be probably impacted by this change.</p>
+		<h3 id="api-changes">API Changes</h3>
+		<p>No API change except the new above EEnum value.</p>
+		<h3 id="user-interface-changes">User Interface Changes</h3>
+		<p>Only properties view will be changed to display the new jump link type.</p>
+		<h3 id="documentation-changes">Documentation Changes</h3>
+		<p>This new type must be documented in the New and Noteworthy documentation.
+			There is currently no Sirius documentation about "Jump links" feature so a full chapter must be added (in the section "Sirius/Sirius User Manual/Diagrams/Features Overview/Manage edges").</p>
+		<h2 id="tests-and-non-regression-strategy">Tests and Non-regression strategy</h2>
+		<p>Manual tests must be added with the following matrix:</p>
+		<ul>
+			<li>each kind of routing style</li>
+			<li>above and below another edge</li>
+			<li>moving the edge through a creation of a new bendpoint</li>
+			<li>moving the edge through a move of the source or/and the target</li>
+		</ul>
+		<h2 id="implementation-choices-and-tradeoffs">Implementation choices and tradeoffs</h2>
+		<p>There is no notion of transparency in the drawing. Only a "emtpy segment" is added instead of the "jump" of other type. This avoids to add new points computation.</p>
+	</body>
+</html>
