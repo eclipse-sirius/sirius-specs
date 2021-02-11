@@ -1,8 +1,8 @@
-# Sirius Evolution Specification: Allow to specify the widget to edit a value in an edition table
+# Sirius Evolution Specification: Allow to specify the widget to edit the value of a cell in an edition table
 
 ## Preamble
 
-_Summary_: The goal of this issue is to be able to provide a specific widget to edit the value in an edition table.
+_Summary_: The goal of this issue is to be able to provide a specific widget to edit the value of a cell in an edition table.
 
 | Version | Status | Date       | Authors   | Changes           |
 |---------|--------|------------|-----------|-------------------|
