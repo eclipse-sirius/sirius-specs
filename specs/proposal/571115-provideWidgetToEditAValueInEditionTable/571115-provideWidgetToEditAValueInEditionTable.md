@@ -1,8 +1,8 @@
-# Sirius Evolution Specification: Allow to precise the widget to edit a value in an edition table
+# Sirius Evolution Specification: Allow to specify the widget to edit a value in an edition table
 
 ## Preamble
 
-_Summary_: The goal of this issue is to be able to provide a specific widget to edit value in an edition table.
+_Summary_: The goal of this issue is to be able to provide a specific widget to edit the value in an edition table.
 
 | Version | Status | Date       | Authors   | Changes           |
 |---------|--------|------------|-----------|-------------------|
@@ -10,11 +10,11 @@ _Summary_: The goal of this issue is to be able to provide a specific widget to 
 
 _Relevant tickets_ (links to the Bugzilla tickets which are related to the change):
 
-* [Bug 571115 - Allow to precise the widget to edit a value in an edition table](https://bugs.eclipse.org/bugs/show_bug.cgi?id=571115)
+* [Bug 571115 - Allow to specify the widget to edit a value in an edition table](https://bugs.eclipse.org/bugs/show_bug.cgi?id=571115)
 
 ## Introduction
 
-The goal of this issue is to be able to provide a specific widget to edit value in an edition table.
+The goal of this issue is to be able to provide a specific widget to edit the value in an edition table.
 
 Currently, the editor offered to edit a cell depends on the contents of the cell. It can be:
 * a combo-box if the content can only be a value in a pre-defined list (enumeration);
@@ -28,7 +28,7 @@ For example, in this table from Family sample, a "Combo box" is available to edi
 
 When the content of the column does not correspond to a "simple" feature, this "automatic" behavior is not possible and a simple text editor is proposed.
 
-With this feature, the specifier could provides its own org.eclipse.jface.viewers.CellEditor for a specific feature column.
+With this feature, the specifier could provide its `own org.eclipse.jface.viewers.CellEditor` for a specific feature column.
 
 ## Detailed Specification
 
@@ -74,8 +74,6 @@ The table metamodel, the part corresponding to the VSM, will be changed to add t
 The part corresponding to the aird file, it not really impacted as the `DCell` directly referenced the `CellUpdater` of the VSM part.
 ![VSM MM Changes](table-mm.png)
 
-Document any change to the Sirius metamodel. If they require a migration operation, mention it and describe the general idea of how migration process. If any information can be lost during the migration, mention it clearly. If validation rules must be added/modified, mention it also.
-  
 ### API Changes
 
 The only API changes are the above metamodel change and the addition of the interface `org.eclipse.sirius.table.tools.internal.command.ITableCellEditorFactory` to be implemented by the CellEditorFactory provided by the specifier.
@@ -94,4 +92,4 @@ The `org.eclipse.sirius.tests.swtbot.table.CellEditionTest` class will be comple
 
 ## Implementation choices and tradeoffs
 
-The cross table is not in the scope of this issue. Nevertheless, it will be addressed if it is possible without additional cost.
+The cross table is not in the scope of this issue. Nevertheless, it will be dealt if it is possible without additional cost.
