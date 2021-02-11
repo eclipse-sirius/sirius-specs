@@ -52,7 +52,7 @@ These variables will be accessible directly in the `CellEditorFactory`. The spec
 The "Cell Editor" tool will have only one property. The qualified class name of the `CellEditorFactory`. This class is a class of the Viewpoint Specification Project, like for [Java Extension](https://www.eclipse.org/sirius/doc/specifier/general/Writing_Queries.html#service_methods) declared the "Viewpoint".
 ![Service VSM Registration](serviceVsmRegistration.png)
 
-The `CellEditorFactory` should implements the interface `org.eclipse.sirius.table.tools.internal.command.ITableCellEditorFactory`:
+The `CellEditorFactory` should implements the interface `org.eclipse.sirius.table.ui.tools.api.editor.ITableCellEditorFactory`:
 
 ![CellEditorFactory interface](CellEditorFactory_interface.png)
 
@@ -76,7 +76,7 @@ The part corresponding to the aird file, it not really impacted as the `DCell` d
 
 ### API Changes
 
-The only API changes are the above metamodel change and the addition of the interface `org.eclipse.sirius.table.tools.internal.command.ITableCellEditorFactory` to be implemented by the CellEditorFactory provided by the specifier.
+The only API changes are the above metamodel change and the addition of the interface `org.eclipse.sirius.table.ui.tools.api.editor.ITableCellEditorFactory` to be implemented by the CellEditorFactory provided by the specifier.
 
 ### User Interface Changes
 
