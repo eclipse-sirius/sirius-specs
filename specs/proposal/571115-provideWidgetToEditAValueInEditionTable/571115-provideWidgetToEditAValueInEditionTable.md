@@ -4,9 +4,10 @@
 
 _Summary_: The goal of this issue is to be able to provide a specific widget to edit the value of a cell in an edition table.
 
-| Version | Status | Date       | Authors   | Changes           |
-|---------|--------|------------|-----------|-------------------|
-|    v0.1 |  DRAFT | 2021-02-11 |   lredor | Initial version.  |
+| Version |  Status  | Date       | Authors   | Changes           |
+|---------|----------|------------|-----------|-------------------|
+|    v0.1 | DRAFT    | 2021-02-11 |   lredor  | Initial version.  |
+|    v0.9 | PROPOSAL | 2021-03-05 |   lredor  | Several adaptation after implementation start |
 
 _Relevant tickets_ (links to the Bugzilla tickets which are related to the change):
 
@@ -40,7 +41,7 @@ To provide its CellEditorFactory, the specifier will use a new tool named "Cell 
 A column can have only one "Label Edit" tool or one "Cell Editor" tool. These two tools are exclusive.
 
 A "Cell Editor" tool will have the same variables has a "Label Edit" tool. The current variables, initialized in `org.eclipse.sirius.table.business.internal.metamodel.TableToolVariables.caseLabelEditTool(LabelEditTool)`, for a "Label Edit" tool are:
-* element: The semantic currently edited element (`target` attribute of the current cell).
+* element: The `DCell` currently edited.
 * table: The current `DTable`.
 * line: The `DLine` of the current `DCell`.
 * lineSemantic: The semantic element corresponding to the line  (`target` attribute of the current line).
@@ -48,15 +49,18 @@ A "Cell Editor" tool will have the same variables has a "Label Edit" tool. The c
 
 ![Cell Editor tool menu](VariablesInLabelEditTool.png)
 
-These variables will be accessible directly in the `CellEditorFactory`. The specifier has the responsibility to return a `CellEditor` compliant with the expected value of the cell.
-The "Cell Editor" tool will have only one property. The qualified class name of the `CellEditorFactory`. This class is a class of the Viewpoint Specification Project, like for [Java Extension](https://www.eclipse.org/sirius/doc/specifier/general/Writing_Queries.html#service_methods) declared the "Viewpoint".
+These variables will be accessible directly in the `CellEditorFactory`. The specifier has the responsibility to return a `org.eclipse.jface.viewers.CellEditor` compliant with the expected value of the cell.
+The "Cell Editor" tool will have only one property. The qualified class name of the `CellEditorFactory`. This class is a class of the Viewpoint Specification Project, or its dependencies, like for [Java Extension](https://www.eclipse.org/sirius/doc/specifier/general/Writing_Queries.html#service_methods) declared in the "Viewpoint".
+
 ![Service VSM Registration](serviceVsmRegistration.png)
 
 The `CellEditorFactory` should implements the interface `org.eclipse.sirius.table.ui.tools.api.editor.ITableCellEditorFactory`:
 
 ![CellEditorFactory interface](CellEditorFactory_interface.png)
 
-Currently, the `CellEditor` provided by Sirius is created in `org.eclipse.sirius.table.ui.tools.internal.editor.provider.DFeatureColumnEditingSupport.getBestCellEditor(EObject, boolean)`. It could be used as sample for specifier to provide their own `org.eclipse.jface.viewers.CellEditor`.
+Currently, the `org.eclipse.jface.viewers.CellEditor` provided by Sirius is created in `org.eclipse.sirius.table.ui.tools.internal.editor.provider.DFeatureColumnEditingSupport.getBestCellEditor(EObject, boolean)`. It could be used as sample for specifier to provide their own `org.eclipse.jface.viewers.CellEditor`.
+
+The result returned by the `org.eclipse.jface.viewers.CellEditor` (method `getValue()`) is then set into the `cellEditorResult` variable of the "Cell Editor" tool. This variable can be used in the operations of the tool to set the expected feature.
 
 ## RCP/Web Flavors Compatibility and Interoperability
 
@@ -93,3 +97,5 @@ The `org.eclipse.sirius.tests.swtbot.table.CellEditionTest` class will be comple
 ## Implementation choices and tradeoffs
 
 The cross table is not in the scope of this issue. Nevertheless, it will be dealt if it is possible without additional cost.
+
+This feature does not concern how the cell is displayed in tha table. The look and feel of the cell will remain the same. Only the behavior of edition, when the end-user will edit a cell, will be changed.
