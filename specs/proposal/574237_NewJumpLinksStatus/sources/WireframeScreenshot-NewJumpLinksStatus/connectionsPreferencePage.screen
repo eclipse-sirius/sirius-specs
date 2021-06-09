@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Image" id="1" x="10" y="10" measuredWidth="903" measuredHeight="209" src="assets/connectionPreference_image.png"/>
+  <widgets xsi:type="model:TabbedPane" id="7" x="10" y="260" width="781" height="271" text="Connections" measuredWidth="781" measuredHeight="271" selection="0">
+    <items x="10" y="0" width="88" height="27" text="Connections"/>
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="8" x="29" y="304" text="Show link between edge and its labels on selection" measuredWidth="287" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="4" x="29" y="330" width="741" height="191" text="User specific default values. These setting apply to all diagrams (does not affect existing elements)." measuredWidth="741" measuredHeight="191">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="12" x="49" y="360" text="Line style" measuredWidth="70" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="13" x="128" y="360" text="Oblique" measuredWidth="69" measuredHeight="23" state="disabled">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="14" x="49" y="390" text="Jump links" measuredWidth="77" measuredHeight="23" selected="true">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="6" x="128" y="390" width="233" height="91" text="Status" measuredWidth="233" measuredHeight="91">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" id="2" x="138" y="408" text="(o) None&#xA;() Below&#xA;() Horizontal" measuredWidth="85" measuredHeight="70" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="85" height="22" text="(o) None"/>
+    <items x="0" y="24" width="85" height="22" text="() Below"/>
+    <items x="0" y="46" width="85" height="22" text="() Horizontal"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="15" x="250" y="408" text="( ) All&#xA;( ) Above&#xA;( ) Vertical" measuredWidth="68" measuredHeight="70" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="68" height="22" text="( ) All"/>
+    <items x="0" y="24" width="68" height="22" text="( ) Above"/>
+    <items x="0" y="46" width="68" height="22" text="( ) Vertical"/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="16" x="380" y="390" width="233" height="70" text="Type" measuredWidth="233" measuredHeight="70">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" id="17" x="390" y="408" text="(o) Semi-Circle&#xA;() Chamfred" measuredWidth="91" measuredHeight="48" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="91" height="22" text="(o) Semi-Circle"/>
+    <items x="0" y="24" width="91" height="22" text="() Chamfred"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="18" x="512" y="408" text="( ) Square&#xA;( ) Tunnel&#xA;" measuredWidth="66" measuredHeight="48" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="66" height="22" text="( ) Square"/>
+    <items x="0" y="24" width="66" height="22" text="( ) Tunnel"/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="19" x="131" y="490" text="Revers jump links" measuredWidth="113" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="21" x="10" y="230" text="Option 1" measuredWidth="52" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TabbedPane" id="22" x="10" y="580" width="781" height="404" text="Connections" measuredWidth="781" measuredHeight="404" selection="0">
+    <items x="10" y="0" width="88" height="27" text="Connections"/>
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="23" x="29" y="624" text="Show link between edge and its labels on selection" measuredWidth="287" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="24" x="29" y="653" width="741" height="141" text="Global user specific values. These settings apply to all elements (even existing elements, not stored in model)" measuredWidth="741" measuredHeight="141">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="25" x="49" y="674" width="701" text="Jump links main behavior" measuredWidth="701" measuredHeight="100">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" id="26" x="60" y="689" text="( ) None&#xA;(o) Horizontal&#xA;( ) Vertical" measuredWidth="85" measuredHeight="70" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="85" height="22" text="( ) None"/>
+    <items x="0" y="24" width="85" height="22" text="(o) Horizontal"/>
+    <items x="0" y="46" width="85" height="22" text="( ) Vertical"/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="27" x="29" y="803" width="741" height="171" text="User specific default values. These setting apply to all diagrams (does not affect existing elements)." measuredWidth="741" measuredHeight="171">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="28" x="49" y="833" text="Line style" measuredWidth="70" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="29" x="128" y="833" text="Oblique" measuredWidth="69" measuredHeight="23" state="disabled">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="30" x="49" y="862" text="Jump links" measuredWidth="77" measuredHeight="23" selected="true">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="31" x="128" y="862" width="233" height="70" text="Status" measuredWidth="233" measuredHeight="70">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" id="32" x="138" y="880" text="(o) None&#xA;() Below" measuredWidth="62" measuredHeight="48" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="62" height="22" text="(o) None"/>
+    <items x="0" y="24" width="62" height="22" text="() Below"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="33" x="250" y="880" text="( ) All&#xA;( ) Above&#xA;" measuredWidth="64" measuredHeight="48" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="64" height="22" text="( ) All"/>
+    <items x="0" y="24" width="64" height="22" text="( ) Above"/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="34" x="380" y="862" width="233" height="70" text="Type" measuredWidth="233" measuredHeight="70">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" id="35" x="390" y="880" text="(o) Semi-Circle&#xA;() Chamfred" measuredWidth="91" measuredHeight="48" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="91" height="22" text="(o) Semi-Circle"/>
+    <items x="0" y="24" width="91" height="22" text="() Chamfred"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="36" x="512" y="880" text="( ) Square&#xA;( ) Tunnel&#xA;" measuredWidth="66" measuredHeight="48" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="66" height="22" text="( ) Square"/>
+    <items x="0" y="24" width="66" height="22" text="( ) Tunnel"/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="37" x="131" y="944" text="Revers jump links" measuredWidth="113" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="38" x="10" y="550" text="Option 2" measuredWidth="52" measuredHeight="23">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>
