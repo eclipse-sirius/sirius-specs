@@ -8,6 +8,7 @@ _Summary_: The goal of this issue is to be able to provide a specific widget to 
 |---------|----------|------------|-----------|-------------------|
 |    v0.1 | DRAFT    | 2021-02-11 |   lredor  | Initial version.  |
 |    v0.9 | PROPOSAL | 2021-03-05 |   lredor  | Several adaptation after implementation start |
+|    v1.0 | ACCEPTED | 2021-03-06 |   lredor  |                   |
 
 _Relevant tickets_ (links to the Bugzilla tickets which are related to the change):
 
