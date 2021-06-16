@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Group" id="4" x="10" y="10" width="382" height="151" text="Jump links" measuredWidth="382" measuredHeight="151">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="6" x="27" y="27" width="165" height="91" text="Status" measuredWidth="165" measuredHeight="91">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" id="2" x="37" y="45" text="(o) None&#xA;() Below&#xA;() Horizontal" measuredWidth="85" measuredHeight="70" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="85" height="22" text="(o) None"/>
+    <items x="0" y="24" width="85" height="22" text="() Below"/>
+    <items x="0" y="46" width="85" height="22" text="() Horizontal"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="15" x="120" y="45" text="( ) All&#xA;( ) Above&#xA;( ) Vertical" measuredWidth="68" measuredHeight="70" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="68" height="22" text="( ) All"/>
+    <items x="0" y="24" width="68" height="22" text="( ) Above"/>
+    <items x="0" y="46" width="68" height="22" text="( ) Vertical"/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="16" x="211" y="27" width="166" height="70" text="Type" measuredWidth="166" measuredHeight="70">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:List" id="17" x="221" y="45" text="(o) Semi-Circle&#xA;() Chamfred" measuredWidth="91" measuredHeight="48" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="91" height="22" text="(o) Semi-Circle"/>
+    <items x="0" y="24" width="91" height="22" text="() Chamfred"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="18" x="311" y="45" text="( ) Square&#xA;( ) Tunnel&#xA;" measuredWidth="66" measuredHeight="48" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="66" height="22" text="( ) Square"/>
+    <items x="0" y="24" width="66" height="22" text="( ) Tunnel"/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="19" x="30" y="127" text="Revers jump links" measuredWidth="113" measuredHeight="23">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

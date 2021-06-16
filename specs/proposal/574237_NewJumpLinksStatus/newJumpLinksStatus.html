@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	</head>
+	<body>
+		<h1 id="sirius-evolution-specification-new-horizontal-and-vertical-jump-links-status">Sirius Evolution Specification: New horizontal and vertical jump links status</h1>
+		<h2 id="preamble">Preamble</h2>
+		<p>_Summary_: The evolution of bugzilla 
+			<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=553775">553775</a> adds a new type of jump link, named "tunnel". The goal of this evolution is to continue to improve the readability of diagram having some edges crossing each other.
+		</p>
+		<p>| Version | Status | Date       | Authors   | Changes           |
+			|---------|--------|------------|-----------|-------------------|
+			|    v0.1 |  DRAFT | 2021-06-09 | lredor    | Initial version.  |</p>
+		<p>
+			<em>Relevant tickets</em>(links to the Bugzilla tickets which are related to the change):
+		</p>
+		<ul>
+			<li>
+				<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=574237">Bug 574237 - New horizontal and vertical jump links status</a>
+			</li>
+		</ul>
+		<h2 id="introduction">Introduction</h2>
+		<p>Currently, 4 status exist:</p>
+		<ul>
+			<li>None: Jump link is not activated on this edge.</li>
+			<li>All: A jump link is created on this edge each time it intersects an edge.</li>
+			<li>Below: A jump link is created on this edge each time it intersects an edge that is below it.</li>
+			<li>Above: A jump link is created on this edge each time it intersects an edge that is above it.</li>
+		</ul>
+		<p>The following illustrations correspond to the effect of these values (
+			<code>None</code>, 
+			<code>All</code>, 
+			<code>Below</code> and 
+			<code>Above</code>) on a simple diagram.
+		</p>
+		<p>
+			<img alt="None status effect" title="None status" border="0" src="images/none.png"/> 
+
+			<img alt="All status effect" title="All status" border="0" src="images/all.png"/> 
+
+			<img alt="Below status effect" title="Below status" border="0" src="images/below.png"/> 
+
+			<img alt="Above status effect" title="Above status" border="0" src="images/above.png"/>
+		</p>
+		<p>For information, the edge between C1 and C2 is below the edge between C3 and C4 and the status is applied on both edges.</p>
+		<p>The goal of this evolution is to add 2 new kind of status. These new status are particular because they no longer depends on the "z-ordering" of the edges but on the alignment of the segements of the edge.</p>
+		<p>The new status are:</p>
+		<ul>
+			<li>Horizontal: A jump link is created on this edge each time it intersects an edge, when the segment on this edge is horizontal.</li>
+			<li>Vertical: A jump link is created on this edge each time it intersects an edge, when the segment on this edge is vertical.</li>
+		</ul>
+		<p>The following illustrations correspond to the effect of these new values (
+			<code>Horizontal</code> and 
+			<code>Vertical</code>) on the same simple diagram.
+		</p>
+		<p>
+			<img alt="Horizontal status effect" title="Horizontal status" border="0" src="images/horizontal.png"/> 
+
+			<img alt="Vertical status effect" title="Vertical status" border="0" src="images/vertical.png"/> 
+		</p>
+		<p>Oblique segments will be also handled. Horizontality or verticality of an oblique segment is determined according to its angle. All segment in blue sections are considered as vertical and all segment in red sections are considered as horizontal.</p>
+		<p>
+			<img alt="Angle for oblique segments" title="Angle for oblique segments" border="0" src="images/angle.png"/> 
+		</p>
+		<p>The following illustration corresponds to the effect of 
+			<code>Horizontal</code> status on oblique edges.
+		</p>
+		<p>
+			<img alt="Horizontal status effect on oblique edges" title="Horizontal status effect on oblique edges" border="0" src="images/obliqueEdges.png"/>
+		</p>
+		<p>Specific rules:</p>
+		<ul>
+			<li>For an horizontal status, if two oblique segments are considered as horizontal and cross each other, the "more" horizontal, according to its angle, has the jump link.</li>
+			<li>For a vertical status, if two oblique segments are considered as vertical and cross each other, the "more" vertical, according to its angle, has the jump link.</li>
+			<li>For edges with oblique segments, there is a potential limitation. If two oblique segments cross each other and the angles are exactly the "opposite", for example 50° and 130°, a specific rule is applied, the edge below the other has the jump.</li>
+		</ul>
+		<h2 id="detailed-specification">Detailed Specification</h2>
+		<p>This Sirius evolution needs to use a new version of GMF, with a an evolution of GMF metamodel. Indeed, the values of status displayed in 
+			<code>Appearance</code> tab of Properties view rely on the enumeration 
+			<code>org.eclipse.gmf.runtime.notation.JumpLinkStatus</code>. A part of this evolution will be done in GMF (as for the addition of the new "Tunnel" type).
+			The code from 
+			<code>org.eclipse.gmf.runtime.draw2d.ui.figures.PolylineConnectionEx.JumpLinkSet.calculateIntersections(Connection)</code>  and 
+			<code>org.eclipse.gmf.runtime.draw2d.ui.figures.PolylineConnectionEx.setJumpLinksStyles(int, boolean, boolean, boolean, boolean)</code>  will be changed to consider these new statuses.
+			As a new version of GMF is necessary, the bugzilla 
+			<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=567876">567876</a> will be handled on GMF side to avoid code duplication in 
+			<code>org.eclipse.sirius.ext.gmf.runtime.draw2d.ui.figures.SiriusPolylineConnectionEx</code>. This class will be deleted after bugzilla 567876 resolution.
+		</p>
+		<p>Sirius will be then adapted to benefit of this new GMF feature.</p>
+		<p>The jump links preferences, from page 
+			<code>org.eclipse.sirius.diagram.ui.internal.preferences.DiagramConnectionsPreferencePage</code> will be also completed with the new status.
+		</p>
+		<h2 id="rcp-web-flavors-compatibility-and-interoperability">RCP/Web Flavors Compatibility and Interoperability</h2>
+		<p>This feature will be available only in RCP as it is massively based on an existing GMF feature.</p>
+		<h2 id="backward-compatibility-and-migration-paths">Backward Compatibility and Migration Paths</h2>
+		<h3 id="metamodel-changes">Metamodel Changes</h3>
+		<p>The GMF version used will be different so a "blank" migration participant will be add (as for example 
+			<code>org.eclipse.sirius.diagram.business.internal.migration.JumpLinkNewTypeMigrationParticipant</code>). This version will not be compatible with previous version.
+		</p>
+		<h3 id="api-changes">API Changes</h3>
+		<p>The API changes concern only the new jump links status.</p>
+		<h3 id="user-interface-changes">User Interface Changes</h3>
+		<p>There are two user interface changes:</p>
+		<ul>
+			<li>the Appearance tab of the Properties view, when an edge is selected: it will be completed with the two new values for the jump links status</li>
+			<ul>
+				<li>The existing Appearance tab of Properties view:
+
+					<img alt="Existing Properties view" title="Existing Properties view" border="0" src="images/propertiesAppearanceTab_existing.png"/>
+				</li>
+				<li>The "Jump links" block updated with new status values:
+
+					<img alt="Updated Properties view" title="Updated Properties view" border="0" src="images/propertiesAppearanceTab_new.png"/>
+				</li>
+			</ul>
+		</ul>
+		<ul>
+			<li>the preference page "Sirius/Sirius Diagram/Connections": it will be completed with the two new values for the jump links status</li>
+			<ul>
+				<li>The existing connection preference page:
+
+					<img alt="Existing preference page" title="Existing preference page" border="0" src="images/preferencePage_existing.png"/>
+				</li>
+				<li>The preference page after the evolution:
+
+					<img alt="Updated preference page" title="Updated preference page" border="0" src="images/preferencePage_new.png"/>
+				</li>
+			</ul>
+		</ul>
+		<h3 id="documentation-changes">Documentation Changes</h3>
+		<p>This new status must be documented in the New and Noteworthy documentation.</p>
+		<p>The chapter corresponding to "Jump links" in Sirius documentation must be completed (in the section "Sirius/Sirius User Manual/Diagrams/Features Overview/Manage edges").</p>
+		<h2 id="tests-and-non-regression-strategy">Tests and Non-regression strategy</h2>
+		<p>The result of this evolution is mainly visual. It is not possible to test it with automatic tests. Manual tests will be described.</p>
+		<h2 id="implementation-choices-and-tradeoffs">Implementation choices and tradeoffs</h2>
+		<h3 id="new-global-preference-with-values-none-horizontal-vertical">New global preference with values "None / Horizontal / Vertical"</h3>
+		<p>An option in which another preference will be added, with values "None / Horizontal / Vertical", has been studied. This preference will not be stored in the model (it is specific to each user with a potential default value defined in the product). It will be prior to other Status property.</p>
+		<p>The preference page will be something like:</p>
+		<p>
+			<img alt="Preference page with option 2" title="Preference page with option 2" border="0" src="images/preferencePage_newWithOption2.png"/>
+		</p>
+		<h4 id="pros">Pros</h4>
+		<ul>
+			<li>Avoid to impact GMF and indirectly avoid Sirius to use a new GMF version.</li>
+		</ul>
+		<h4 id="cons">Cons</h4>
+		<ul>
+			<li>Less comprehensible by end-user: A part of jump links behavior is handled threw properties another is handled threw preferences. A part is stored in the model, another part is stored in the workspace (preferences) ...</li>
+		</ul>
+	</body>
+</html>
