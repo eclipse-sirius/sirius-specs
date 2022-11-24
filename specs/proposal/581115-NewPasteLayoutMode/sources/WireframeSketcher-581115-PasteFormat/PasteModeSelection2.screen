@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="18" x="10" y="10" width="451" height="221" text="Paste mode" measuredWidth="451" measuredHeight="221"/>
+  <widgets xsi:type="model:List" id="20" x="50" y="76" text="(o) Absolute&#xA;( ) Bounding box" measuredWidth="105" measuredHeight="48" border="false" alpha="0">
+    <font/>
+    <items x="0" y="2" width="105" height="22" text="(o) Absolute"/>
+    <items x="0" y="24" width="105" height="22" text="( ) Bounding box"/>
+  </widgets>
+  <widgets xsi:type="model:Checkbox" id="21" x="30" y="160" text="Do not prompt to select paste mode, use last choice" measuredWidth="295" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="22" x="324" y="186" text="Paste" measuredWidth="48" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="23" x="380" y="186" text="Cancel" measuredWidth="56" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="24" x="30" y="50" text="Select the desired paste mode:" measuredWidth="166" measuredHeight="23">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

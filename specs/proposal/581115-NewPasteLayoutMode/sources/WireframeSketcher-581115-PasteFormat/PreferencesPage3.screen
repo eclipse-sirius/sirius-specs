@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="3" x="20" y="20" width="780" height="563" text="Preferences" measuredWidth="780" measuredHeight="563"/>
+  <widgets xsi:type="model:Image" id="1" x="20" y="49" measuredWidth="780" measuredHeight="382" src="assets/PreferencesTop.png"/>
+  <widgets xsi:type="model:Group" id="5" x="40" y="240" width="750" height="51" text="Paste mode" measuredWidth="750" measuredHeight="51">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="9" x="20" y="298" measuredWidth="780" measuredHeight="285" src="assets/PreferencesBottom.png"/>
+  <widgets xsi:type="model:RadioButton" id="16" x="50" y="260" text="Prompt" measuredWidth="60" measuredHeight="23" selected="true">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:RadioButton" id="17" x="120" y="260" text="Absolute" measuredWidth="67" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:RadioButton" id="18" x="200" y="260" text="Bounding box" measuredWidth="95" measuredHeight="23">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>
