@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	</head>
+	<body>
+		<h1 id="sirius-evolution-specification-add-a-new-mode-to-paste-layout-of-elements">Sirius Evolution Specification: Add a new mode to paste layout of elements</h1>
+		<h2 id="preamble">Preamble</h2>
+		<p>_Summary_: The goal of this evolution is to allow to choose between the current mode and a new mode when using the "Paste layout" or "Paste format" actions. This new mode keeps the same origin of the bounding box containing the elements having a copied layout to apply on.</p>
+		<p>A picture is worth a thousand words:</p>
+		<p>
+			<img alt="A first sample" title="A first sample" border="0" src="images/summary.png"/> 
+		</p>
+		<p>In the above example, in the new mode, the bounding box origin of 
+			<code>{175, 50}</code> is kept. The layout is applied by considering this origin.
+			In the current mode, there is overlap with other existing nodes.
+		</p>
+		<p>| Version | Status    | Date       | Authors   | Changes           |
+			|---------|-----------|------------|-----------|-------------------|
+			|    v0.1 |  PROPOSAL | 2022-11-24 |  lredor   | Initial version.  |</p>
+		<p>
+			<em>Relevant tickets</em>(links to the Bugzilla tickets which are related to the change):
+		</p>
+		<ul>
+			<li>
+				<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=581115">Bug 581115 - Add a new mode to paste layout of elements: "Bounding box" mode</a>
+			</li>
+		</ul>
+		<h2 id="introduction">Introduction</h2>
+		<p>After this evolution, a popup will appear after launching the "Paste format" or "Paste layout" action.</p>
+		<p>
+			<img alt="Select paste mode" title="Select paste mode" border="0" src="images/selectPasteMode.png"/> 
+		</p>
+		<p>The user can select the desired paste mode:</p>
+		<ul>
+			<li>Absolute: Current behavior, the layout is applied to have the same location of the source elements with absolute coordinates, ie relatively to the origin of the diagram (coordinates 
+				<code>{0, 0}</code>).
+			</li>
+			<li>Bounding box: The children of a container having copied layout data is grouped, and the origin of bounding box remains unchanged. The layout of the children, ie brothers, is similar to each other.</li>
+		</ul>
+		<p>In this popup, the user can check the box "Do not prompt to select paste mode, use last choice". If this box is checked, at the next execution of the "Paste" action, the popup will not be displayed and the last used mode will be used by default.</p>
+		<p>The user can modify this choice in the preferences: 
+			<code>Sirius/Sirius Diagram</code>.
+		</p>
+		<p>
+			<img alt="Preference page" title="Preference page" border="0" src="images/preferencesPage.png"/> 
+		</p>
+		<p>This new mode is used either in "Paste format" or "Paste layout". The result is the same in both action.</p>
+		<h2 id="detailed-specification">Detailed Specification</h2>
+		<p>There are specific cases:</p>
+		<ul>
+			<li>If the layout data stored during the copy concern a hierarchy of elements and this hierarchy is also in the target, the behavior is slightly different. The "Bounding box" mode is considered only for the first level having layout data to apply to. Thus, the location of the children remain in relative mode with respect to their parent. This case is detailed farther in "Case 4 - Layout data hierarchy" of "Several samples" chapter.</li>
+			<ul>
+				<li>If the hierarchy is lost, for example a data layout for a grand-parent but not for the parent, the nodes are "layouted", once again, according to the "Bounding box" mode. This case is detailed farther in "Case 5 - Layout data hierarchy broken" of "Several samples" chapter.</li>
+			</ul>
+			<li>This new mode does not concern border nodes. Copy the layout of one or several border nodes, without the layout of their parent, doesn't really make sense. But it is possible, with the absolute mode. For the border nodes, the result will be the same for the "bounding box" mode and the "absolute mode". The most common case will be to be in the case explained just above, ie border nodes and its parent layout are copied.</li>
+		</ul>
+		<p>The next chapters details what is "the origin of the bounding box" and several cases with the expected behavior of the new mode.</p>
+		<h3 id="origin-of-the-bounding-box">Origin of the bounding box</h3>
+		<p>
+			<strong>Simple case</strong>
+		</p>
+		<p>The bounding box of elements if a rectangle containing all these elements. And the origin of a bounding box is the coordinates of the top-left corner of this rectangle.</p>
+		<p>For example in the following diagram:</p>
+		<ul>
+			<li>The bounding box of elements "B" and "E" is the red rectangle.</li>
+			<li>The bounding box of elements "A", "B" and "C" is the green rectangle.</li>
+		</ul>
+		<p>
+			<img alt="bounding box" title="bounding box" border="0" src="images/boundingBox.png"/> 
+		</p>
+		<p>
+			<strong>More complexe case</strong>
+		</p>
+		<p>If the elements contain edges, labels of edges, border nodes, label of border nodes... The rule is always the same. The bounding box contains all these elements.</p>
+		<p>For example in the following diagram, the bounding box of all elements is the red rectangle.
+
+			<img alt="bounding box2" title="bounding box2" border="0" src="images/boundingBox2.png"/> 
+		</p>
+		<h3 id="several-samples">Several samples</h3>
+		<p>The semantic model used is the following. The diagrams are unsynchronized and allow to represent packages and/or classes in one of its parents, in all parent hierarchy.</p>
+		<p>
+			<img alt="semanticModelCase1" title="semanticModelCase1" border="0" src="images/semanticModelCase1.png"/>
+		</p>
+		<p>
+			<strong>Case 1 - Standard case</strong>
+		</p>
+		<p>If the "Copy format" is launched on classes "D" and "E", from "newDiagPasteLayoutCase1-Source" and the "Paste format" is done in "newDiagPasteLayoutCase1-Target1" with "Bounding box" mode, </p>
+		<p>
+			<img alt="newDiagPasteLayoutCase1" title="newDiagPasteLayoutCase1" border="0" src="images/newDiagPasteLayoutCase1.png"/>
+		</p>
+		<p>the expected result is the following: no overlap with other classes and the origin of the bounding box of "D" and "E" remains the same.</p>
+		<p>
+			<img alt="newDiagPasteLayoutCase1-ExpectedResult" title="newDiagPasteLayoutCase1-ExpectedResult1" border="0" src="images/newDiagPasteLayoutCase1-ExpectedResult.png"/>
+		</p>
+		<p>
+			<strong>Case 2 - Not same hierarchy and scrollbar</strong>
+		</p>
+		<p>If the "Copy format" is launched on classes "D" and "E", from "newDiagPasteLayoutCase1-Source" and the "Paste format" is done in "newDiagPasteLayoutCase1-Target2" with "Bounding box" mode, </p>
+		<p>
+			<img alt="newDiagPasteLayoutCase2" title="newDiagPasteLayoutCase2" border="0" src="images/newDiagPasteLayoutCase2.png"/>
+		</p>
+		<p>the expected result is the following: The origin of the bounding box of "D" and "E" remains the same. A scrollbar appears on "P11" because the class "E" overflows this container.</p>
+		<p>
+			<img alt="newDiagPasteLayoutCase2-ExpectedResult" title="newDiagPasteLayoutCase2-ExpectedResult" border="0" src="images/newDiagPasteLayoutCase2-ExpectedResult.png"/>
+		</p>
+		<p>
+			<strong>Case 3 - Scrollbar</strong>
+		</p>
+		<p>If the "Copy format" is launched on classes "A" and "B", from "newDiagPasteLayoutCase2-Source" and the "Paste format" is done in "newDiagPasteLayoutCase2-Target" with "Bounding box" mode, </p>
+		<p>
+			<img alt="newDiagPasteLayoutCase3" title="newDiagPasteLayoutCase3" border="0" src="images/newDiagPasteLayoutCase3.png"/>
+		</p>
+		<p>the expected result is the following: The origin of the bounding box of "A" and "B" remains the same. A scrollbar appears on "P11" because the class "B" overflows this container.</p>
+		<p>
+			<img alt="newDiagPasteLayoutCase3-ExpectedResult" title="newDiagPasteLayoutCase3-ExpectedResult" border="0" src="images/newDiagPasteLayoutCase3-ExpectedResult.png"/>
+		</p>
+		<p>
+			<strong>Case 4 - Layout data hierarchy</strong>
+		</p>
+		<p>For the same situation that case 3, but with a "Copy format" launched on package "P11", class "A" and class "B" (selection of classes "A" and "B" is optional, ie the result is the same with only "P11" selected, because the "Copy" action copies the layout data of the children too), the expected result is the following: The origin of the bounding box of "P11" remains the same. The "bounding box" mode is not considered for children of element having a layout data to paste, so "A" and "B" are moved without considering the bounding box.</p>
+		<p>
+			<img alt="newDiagPasteLayoutCase4-ExpectedResult" title="newDiagPasteLayoutCase4-ExpectedResult" border="0" src="images/newDiagPasteLayoutCase4-ExpectedResult.png"/>
+		</p>
+		<p>
+			<strong>Case 5 - Layout data hierarchy broken</strong>
+		</p>
+		<p>If the "Copy format" is launched on the diagram "newDiagPasteLayoutCase5-Source" and the "Paste format" is done in "newDiagPasteLayoutCase5-Target" with "Bounding box" mode, </p>
+		<p>
+			<img alt="newDiagPasteLayoutCase5" title="newDiagPasteLayoutCase5" border="0" src="images/newDiagPasteLayoutCase5.png"/>
+		</p>
+		<p>the expected result is the following: The origin of the bounding box of "P1" remains the same. P1 is resized, causing scrollbars because "P11" is not concerned by the Paste (no layout date). The origin of the bounding box of "A" and "B" remains the same (no direct parent in the stored layout data).</p>
+		<p>
+			<img alt="newDiagPasteLayoutCase5-ExpectedResult" title="newDiagPasteLayoutCase5-ExpectedResult" border="0" src="images/newDiagPasteLayoutCase5-ExpectedResult.png"/>
+		</p>
+		<p>
+			<strong>Case 6 - Edge and border nodes</strong>
+		</p>
+		<p>If the "Copy format" is launched on the diagram "newDiagPasteLayoutCase6-Source", with  and the "Paste format" is done in "newDiagPasteLayoutCase6-Target" with "Bounding box" mode, </p>
+		<p>
+			<img alt="newDiagPasteLayoutCase6" title="newDiagPasteLayoutCase6" border="0" src="images/newDiagPasteLayoutCase6.png"/>
+		</p>
+		<p>the expected result is the following: The origin of the bounding box of "C1", "C2", the edge and its labels remains the same.</p>
+		<p>
+			<img alt="newDiagPasteLayoutCase6-ExpectedResult" title="newDiagPasteLayoutCase6-ExpectedResult" border="0" src="images/newDiagPasteLayoutCase6-ExpectedResult.png"/>
+		</p>
+		<h2 id="rcp-web-flavors-compatibility-and-interoperability">RCP/Web Flavors Compatibility and Interoperability</h2>
+		<p>This feature will exist only in Sirius RCP. Indeed, the current "Copy/Paste format" actions are not implemented in Sirius Web, so the new mode neither.</p>
+		<h2 id="backward-compatibility-and-migration-paths">Backward Compatibility and Migration Paths</h2>
+		<p>No migration is needed. The changes impact the UI and the result of Paste action.</p>
+		<h3 id="metamodel-changes">Metamodel Changes</h3>
+		<p>There is no metamodel change necessary for this feature.</p>
+		<h3 id="api-changes">API Changes</h3>
+		<p>New API will be added concerning the preferences and their default values:</p>
+		<ul>
+			<li>
+				<code>org.eclipse.sirius.diagram.ui.tools.api.preferences.SiriusDiagramUiPreferencesKeys.PREF_PROMPT_PASTE_MODE</code>: A boolean preference to say if the paste mode must be prompt at each "Paste format" or "Paste layout" action.
+			</li>
+			<li>
+				<code>org.eclipse.sirius.diagram.ui.tools.api.preferences.SiriusDiagramUiPreferencesKeys.PREF_PASTE_MODE_ABSOLUTE</code>: A boolean preference for the paste mode, true for 
+				<code>Absolute</code> mode, false for 
+				<code>Bounding box</code> mode).
+			</li>
+			<ul>
+				<li>If the 
+					<code>PREF_PROMPT_PASTE_MODE</code> is true, this preference is used to pre-select the choice in the popup.
+				</li>
+				<li>If the 
+					<code>PREF_PROMPT_PASTE_MODE</code> is false, this preference is used to automatically choose the Paste mode to apply.
+				</li>
+			</ul>
+		</ul>
+		<h3 id="user-interface-changes">User Interface Changes</h3>
+		<p>As explained in "Introduction":</p>
+		<ul>
+			<li>a new popup is displayed at each "Paste format/layout" action execution (according to preference value),</li>
+			<li>a new preference page allows end-user to change the value.</li>
+		</ul>
+		<h3 id="documentation-changes">Documentation Changes</h3>
+		<p>The New and Noteworthy documentation must be completed.</p>
+		<p>The chapter 
+			<em>
+				<a href="https://www.eclipse.org/sirius/doc/user/diagrams/Diagrams.html#copy_paste_format">Copy/paste of format</a>
+			</em> of Sirius documentation must be completed.
+		</p>
+		<h2 id="tests-and-non-regression-strategy">Tests and Non-regression strategy</h2>
+		<p>The cases described in "Several samples" can be used as manual tests.</p>
+		<p>The classes 
+			<code>org.eclipse.sirius.tests.swtbot.layout.ContainerAndNodeCopyPasteFormatTest</code> and 
+			<code>org.eclipse.sirius.tests.swtbot.layout.EdgeCopyPasteFormatTest</code> can be completed.
+		</p>
+		<p>
+			<code>org.eclipse.sirius.tests.swtbot.clipboard.MultiSessionCopyPasteTest</code>
+
+			<code>org.eclipse.sirius.tests.swtbot.layout.BorderedNodeCopyPasteFormatTest</code>
+
+			<code>org.eclipse.sirius.tests.swtbot.layout.EdgeStabilityOnCopyPasteLayoutTest</code>
+
+			<code>org.eclipse.sirius.tests.swtbot.uml.CopyPasteFormatOfLabelOfBorderedNodeTest</code>
+
+			<code>org.eclipse.sirius.tests.swtbot.uml.CopyPasteLayoutOfPortsWithConflictWithNotPastedPortsTest</code>
+
+			<code>org.eclipse.sirius.tests.swtbot.uml.CopyPasteLayoutOfPortsWithConflictWithPastedPortsTest</code>
+		</p>
+		<h2 id="implementation-choices-and-tradeoffs">Implementation choices and tradeoffs</h2>
+		<p>There is no guarantee to cover specific cases not detailed in the "Detailed Specification".</p>
+		<p>Specific cases not currently covered by the current mode will not be covered by the new mode. For the same reasons, existing bugs in the current mode will not be fixed with the implementation of this new mode.</p>
+	</body>
+</html>
