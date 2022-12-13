@@ -15,6 +15,7 @@ In the current mode, there is overlap with other existing nodes.
 | Version | Status    | Date       | Authors   | Changes           |
 |---------|-----------|------------|-----------|-------------------|
 |    v0.1 |  PROPOSAL | 2022-11-24 |  lredor   | Initial version.  |
+|    v1.0 |  ACCEPTED | 2022-12-13 |  lredor   | Initial version.  |
 
 _Relevant tickets_ (links to the Bugzilla tickets which are related to the change):
 
