@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
   <widgets xsi:type="model:Window" id="18" x="10" y="10" width="451" height="221" text="Paste mode" measuredWidth="451" measuredHeight="221"/>
-  <widgets xsi:type="model:List" id="20" x="50" y="76" text="(o) Absolute&#xA;( ) Bounding box" measuredWidth="105" measuredHeight="48" border="false" alpha="0">
+  <widgets xsi:type="model:List" id="20" x="50" y="76" text="(o) Similar locations in absolute coordinates&#xA;( ) Optimized locations by group" measuredWidth="243" measuredHeight="48" border="false" alpha="0">
     <font/>
-    <items x="0" y="2" width="105" height="22" text="(o) Absolute"/>
-    <items x="0" y="24" width="105" height="22" text="( ) Bounding box"/>
+    <items x="0" y="2" width="243" height="22" text="(o) Similar locations in absolute coordinates"/>
+    <items x="0" y="24" width="243" height="22" text="( ) Optimized locations by group"/>
   </widgets>
   <widgets xsi:type="model:Checkbox" id="21" x="30" y="160" text="Remember my decision" measuredWidth="146" measuredHeight="23">
     <font/>

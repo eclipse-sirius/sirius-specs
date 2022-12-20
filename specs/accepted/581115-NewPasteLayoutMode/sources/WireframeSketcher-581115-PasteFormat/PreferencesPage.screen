@@ -8,12 +8,15 @@
   <widgets xsi:type="model:Checkbox" id="4" x="50" y="260" text="Prompt to select paste mode" measuredWidth="173" measuredHeight="23">
     <font/>
   </widgets>
-  <widgets xsi:type="model:List" id="6" x="50" y="290" width="721" text="(o) Absolute&#xA;( ) Bounding box" measuredWidth="721" measuredHeight="48" border="false" alpha="0">
+  <widgets xsi:type="model:List" id="6" x="50" y="290" width="721" text="(o) Similar locations in absolute coordinates&#xA;( ) Optimized locations by group" measuredWidth="721" measuredHeight="48" border="false" alpha="0">
     <font/>
-    <items x="0" y="2" width="721" height="22" text="(o) Absolute"/>
-    <items x="0" y="24" width="721" height="22" text="( ) Bounding box"/>
+    <items x="0" y="2" width="721" height="22" text="(o) Similar locations in absolute coordinates"/>
+    <items x="0" y="24" width="721" height="22" text="( ) Optimized locations by group"/>
   </widgets>
   <widgets xsi:type="model:Image" id="9" x="20" y="340" measuredWidth="780" measuredHeight="285" src="assets/PreferencesBottom.png"/>
+  <widgets xsi:type="model:Icon" id="10" x="230" y="264" measuredWidth="16" measuredHeight="16" icon="help (small)"/>
+  <widgets xsi:type="model:Icon" id="11" x="296" y="296" measuredWidth="16" measuredHeight="16" icon="help (small)"/>
+  <widgets xsi:type="model:Icon" id="12" x="297" y="318" measuredWidth="16" measuredHeight="16" icon="help (small)"/>
   <hRuler/>
   <vRuler/>
   <font size="12px"/>

@@ -18,7 +18,8 @@
 		<p>| Version | Status    | Date       | Authors   | Changes           |
 			|---------|-----------|------------|-----------|-------------------|
 			|    v0.1 |  PROPOSAL | 2022-11-24 |  lredor   | Initial version.  |
-			|    v1.0 |  ACCEPTED | 2022-12-13 |  lredor   | Initial version.  |</p>
+			|    v1.0 |  ACCEPTED | 2022-12-13 |  lredor   | Initial version.  |
+			|    v1.1 |  ACCEPTED | 2022-12-20 |  lredor   | Specification updated after some customer feedbacks. |</p>
 		<p>
 			<em>Relevant tickets</em>(links to the Bugzilla tickets which are related to the change):
 		</p>
@@ -34,16 +35,18 @@
 		</p>
 		<p>The user can select the desired paste mode:</p>
 		<ul>
-			<li>Absolute: Current behavior, the layout is applied to have the same location of the source elements with absolute coordinates, ie relatively to the origin of the diagram (coordinates 
+			<li>Similar locations in absolute coordinates: Current behavior, the layout is applied to have the same location of the source elements with absolute coordinates, ie relatively to the origin of the diagram (coordinates 
 				<code>{0, 0}</code>).
 			</li>
-			<li>Bounding box: The children of a container having copied layout data is grouped, and the origin of bounding box remains unchanged. The layout of the children, ie brothers, is similar to each other.</li>
+			<li>Optimized locations by group: The children of a container having copied layout data is grouped, and the origin of bounding box remains unchanged. The layout of the children, ie brothers, is similar to each other.</li>
 		</ul>
-		<p>In this popup, the user can check the box "Do not prompt to select paste mode, use last choice". If this box is checked, at the next execution of the "Paste" action, the popup will not be displayed and the last used mode will be used by default.</p>
+		<p>The mode "Similar locations in absolute coordinates" is technically called the absolute mode.
+			The mode "Optimized locations by group" is technically called the bounding box mode.</p>
+		<p>A tootlip will be available on each label of radio buttons, and on the label of the check-box.</p>
+		<p>In this popup, the user can check the box "Remember my decision". If this box is checked, at the next execution of the "Paste" action, the popup will not be displayed and the last used mode will be used by default.</p>
 		<p>The user can modify this choice in the preferences: 
 			<code>Sirius/Sirius Diagram</code>.
-		</p>
-		<p>
+
 			<img alt="Preference page" title="Preference page" border="0" src="images/preferencesPage.png"/> 
 		</p>
 		<p>This new mode is used either in "Paste format" or "Paste layout". The result is the same in both action.</p>
@@ -54,7 +57,7 @@
 			<ul>
 				<li>If the hierarchy is lost, for example a data layout for a grand-parent but not for the parent, the nodes are "layouted", once again, according to the "Bounding box" mode. This case is detailed farther in "Case 5 - Layout data hierarchy broken" of "Several samples" chapter.</li>
 			</ul>
-			<li>This new mode does not concern border nodes. Copy the layout of one or several border nodes, without the layout of their parent, doesn't really make sense. But it is possible, with the absolute mode. For the border nodes, the result will be the same for the "bounding box" mode and the "absolute mode". The most common case will be to be in the case explained just above, ie border nodes and its parent layout are copied.</li>
+			<li>This new mode does not concern border nodes. Copy the layout of one or several border nodes, without the layout of their parent, doesn't really make sense. But it is possible, with the absolute mode. For the border nodes, the result will be the same for the "bounding box" mode and the "absolute" mode. The most common case will be to be in the case explained just above, ie border nodes and its parent layout are copied.</li>
 		</ul>
 		<p>The next chapters details what is "the origin of the bounding box" and several cases with the expected behavior of the new mode.</p>
 		<h3 id="origin-of-the-bounding-box">Origin of the bounding box</h3>
@@ -73,11 +76,16 @@
 		<p>
 			<strong>More complexe case</strong>
 		</p>
-		<p>If the elements contain edges, labels of edges, border nodes, label of border nodes... The rule is always the same. The bounding box contains all these elements.</p>
-		<p>For example in the following diagram, the bounding box of all elements is the red rectangle.
+		<p>If the elements contain edges, labels of edges, border nodes, label of border nodes... The rule is always the same. The bounding box contains only the nodes and containers elements.</p>
+		<p>For example in the following diagram:</p>
+		<ul>
+			<li>the bounding box of all elements is the red rectangle.</li>
+			<li>the bounding box of LogicalFunction1 and LogicalFunction2 is the green rectangle.</li>
+			<li>the bounding box of LogicalFunction1, LogicalFunction2 and all border nodes, edges and their label, is the green rectangle too.
 
-			<img alt="bounding box2" title="bounding box2" border="0" src="images/boundingBox2.png"/> 
-		</p>
+				<img alt="bounding box2" title="bounding box2" border="0" src="images/boundingBox2.png"/> 
+			</li>
+		</ul>
 		<h3 id="several-samples">Several samples</h3>
 		<p>The semantic model used is the following. The diagrams are unsynchronized and allow to represent packages and/or classes in one of its parents, in all parent hierarchy.</p>
 		<p>
@@ -137,13 +145,24 @@
 		<p>
 			<strong>Case 6 - Edge and border nodes</strong>
 		</p>
-		<p>If the "Copy format" is launched on the diagram "newDiagPasteLayoutCase6-Source", with  and the "Paste format" is done in "newDiagPasteLayoutCase6-Target" with "Bounding box" mode, </p>
+		<p>If the "Copy format" is launched on classes "C1" and "C2", from "newDiagPasteLayoutCase6-Source", and the "Paste format" is done in "newDiagPasteLayoutCase6-Target" with "Bounding box" mode, </p>
 		<p>
 			<img alt="newDiagPasteLayoutCase6" title="newDiagPasteLayoutCase6" border="0" src="images/newDiagPasteLayoutCase6.png"/>
 		</p>
-		<p>the expected result is the following: The origin of the bounding box of "C1", "C2", the edge and its labels remains the same.</p>
+		<p>the expected result is the following: The origin of the bounding box of "C1", "C2" remains the same. The layout of the edge and its labels is copied but is ignored in the bounding box computation.</p>
 		<p>
 			<img alt="newDiagPasteLayoutCase6-ExpectedResult" title="newDiagPasteLayoutCase6-ExpectedResult" border="0" src="images/newDiagPasteLayoutCase6-ExpectedResult.png"/>
+		</p>
+		<p>
+			<strong>Case 7 - Validate group of brothers in same container</strong>
+		</p>
+		<p>If the "Copy format" is launched on classes "C1", "C2" and "C3", from "newDiagPasteLayoutCase6-Source", and the "Paste format" is done in "newDiagPasteLayoutCase6-Target" with "Bounding box" mode, </p>
+		<p>
+			<img alt="newDiagPasteLayoutCase7" title="newDiagPasteLayoutCase7" border="0" src="images/newDiagPasteLayoutCase7.png"/>
+		</p>
+		<p>the expected result is the following: The origin of the bounding box of "C1", "C2" remains the same AND the origin of the bounding box of "C3" remains the same. Each group of brothers is processed independently of each other.</p>
+		<p>
+			<img alt="newDiagPasteLayoutCase7-ExpectedResult" title="newDiagPasteLayoutCase7-ExpectedResult" border="0" src="images/newDiagPasteLayoutCase7-ExpectedResult.png"/>
 		</p>
 		<h2 id="rcp-web-flavors-compatibility-and-interoperability">RCP/Web Flavors Compatibility and Interoperability</h2>
 		<p>This feature will exist only in Sirius RCP. Indeed, the current "Copy/Paste format" actions are not implemented in Sirius Web, so the new mode neither.</p>
