@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	</head>
+	<body>
+		<h1 id="sirius-evolution-specification-keep-graphical-elements-without-semantic-link-after-a-sirius-graphical-change">Sirius Evolution Specification: Keep "graphical elements without semantic link" after a Sirius graphical change</h1>
+		<h2 id="preamble">Preamble</h2>
+		<p>_Summary_: The goal of this feature request is to keep the "graphical elements without semantic link" after a Sirius graphical change. The "graphical elements without semantic link" are the notes, the representation links, the texts and the note attachments.</p>
+		<p>| Version | Status | Date       | Authors   | Changes           |
+			|---------|--------|------------|-----------|-------------------|
+			|    v0.1 |  DRAFT | 2023-04-14 |   lredor  | Initial version.  |
+			|    v0.2 |  DRAFT | 2023-04-18 |   lredor  | Amend scenarios.  |</p>
+		<p>
+			<em>Relevant tickets</em>:
+		</p>
+		<ul>
+			<li>
+				<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=581811">Bug 581811 - Change purely graphical elements behavior according to drag'n'drop or deletion of Sirius diagram elements</a>
+			</li>
+		</ul>
+		<h2 id="introduction">Introduction</h2>
+		<p>In Sirius, there are 4 "graphical elements without semantic link". These concepts are purely graphical, they have no effect on the semantic model and the semantic model has no impact on them. In the rest of the specification, we talk about "purely graphical elements" for these concepts. All the tools allowing to create them are grouped in the same drop-down menu in the palette:</p>
+		<p>
+			<img alt="Palette" title="Palette" border="0" src="images/palette.png"/>
+		</p>
+		<p>The notes, the representation links and the texts can be created on the diagram or in a container.
+			The note attachments link a purely graphical element (a 
+			<code>Note</code>, a 
+			<code>Representation Link</code>, a 
+			<code>Text</code> or another 
+			<code>Note Attachment</code>) to another object. This object is most of the time a Sirius graphical element, which correspond to a semantic element. But it can also be another purely graphical element.
+		</p>
+		<p>After some change on the diagram, some "graphical elements without semantic link" can be lost without obvious reason for the end-user. Technically, these elements are sometimes removed because the original annotated Sirius graphical element has been removed. But according to the end-user, the Sirius graphical element is the same (even if technically, this is a new one, created by the Sirius refresh mechanism).</p>
+		<p>The below example is a simple case to clarify the problem.</p>
+		<p>
+			<img alt="Simple sample before drag&apos;n&apos;drop" title="Simple sample before drag&apos;n&apos;drop" border="0" src="images/SimpleSample-1-beforeDnD.png"/>
+		</p>
+		<p>The above diagram is a sample before doing a drag'n'drop of "Class1" from the container "packageA" to the diagram.</p>
+		<ul>
+			<li>The "packageA" and "Class1" are Sirius graphical elements, with respectively a link with semantic elements "packageA" and "Class1".</li>
+			<li>The "NoteOnNode" is a purely graphical concept, a 
+				<code>Note</code>.
+			</li>
+			<li>The link between "NoteOnNode" and "Class1" is a 
+				<code>NoteAttachment</code>.
+			</li>
+		</ul>
+		<p>
+			<img alt="Simple sample after drag&apos;n&apos;drop" title="Simple sample after drag&apos;n&apos;drop" border="0" src="images/SimpleSample-2-afterDnD.png"/>
+		</p>
+		<p>The above diagram is the current result after doing the drag'n'drop of "Class1" from the container "packageA" to the diagram. As you can see, the link between "NoteOnNode" and "Class1" has been lost. This is a typical sample of problem that this feature must resolve.</p>
+		<h2 id="detailed-specification">Detailed Specification</h2>
+		<p>When you perform certain actions on a diagram, multiple refreshes are technically involved:</p>
+		<ul>
+			<li>Firstly, the executed tool makes semantic changes (according to what has been coded in your modeler).</li>
+			<li>Then, a Sirius refresh is called to (re)compute the Sirius graphical elements to display in the diagram (called 
+				<code>DDiagramElement</code>), according to the semantic elements state.
+			</li>
+			<li>Then, the GMF nodes and edges are refreshed according to Sirius graphical elements. The GMF nodes are somehow the link between the Sirius graphical elements and the corresponding "figures" drawn in the diagram.</li>
+		</ul>
+		<p>The purely graphical elements only exist on the "GMF nodes and edges layer". In the above simple sample:</p>
+		<ul>
+			<li>The tool moves the "Class1" from "packageA" to container of "packageA", ie the semantic package associated to the diagram.</li>
+			<li>The Sirius refresh identifies that the semantic element "is the same" and reuses the existing DDiagramElement.</li>
+			<li>But at the "GMF nodes and edges layer", a new node is created and the original node, at which the Note was connected, no longer exists. So the note attachment is removed during the "GMF nodes and edges refresh".</li>
+		</ul>
+		<p>Only scenarios described bellow will be handled by this feature request. Indeed, the refresh mechanism is complex. It can be "amended" by specific extension point. For this reason, there is no guarantee that a scenario not explained here will be covered.</p>
+		<p>Globally, the goal is to keep the purely graphical elements if after the tool execution, we are able to find one, and only one, GMF created node with the same DDiagramElement or with the same semantic element, than the after original linked element.</p>
+		<p>All the below scenarios used data available in 
+			<a href="https://git.eclipse.org/r/c/sirius/org.eclipse.sirius/+/201382">gerrit 201382</a>.
+		</p>
+		<h3 id="scenario-a-drag-n-drop-of-a-node-from-a-container-to-the-diagram-with-a-note-linked-to-this-node-the-mapping-is-the-same-before-and-after-the-drag-n-drop">Scenario A - Drag'n'drop of a Node from a container to the diagram, with a Note linked to this Node. The mapping is the same before and after the drag'n'drop.</h3>
+		<ul>
+			<li>Open diagram "scenarioA-diagramWithNodeDnDAndSameMapping-simple"</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioA-diagramWithNodeDnDAndSameMapping-simple-1-before.png"/>
+		</p>
+		<ul>
+			<li>Drag'n'drop the node "ClassA" to the diagram</li>
+			<li>
+				<strong>Expected</strong>: The note "NoteOnNode" is always linked to the node "ClassA".
+			</li>
+			<li>
+				<strong>Observed</strong>: The note "NoteOnNode" is no longer linked to the node "ClassA".
+			</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioA-diagramWithNodeDnDAndSameMapping-simple-2-after.png"/>
+		</p>
+		<ul>
+			<li>This scenario can be the replayed with:</li>
+			<ul>
+				<li>a Container, an Element Based Edge or a Representation Based Edge instead of the Node,</li>
+				<li>a Representation Link or a Text instead of the Note</li>
+				<li>with the purely graphical element on source side or on target side</li>
+			</ul>
+		</ul>
+		<h3 id="scenario-b-drag-n-drop-of-a-container-having-sub-nodes-and-edges-linked-to-purely-graphical-elements-even-with-note-associated-to-another-representation-link">Scenario B - Drag'n'drop of a Container having sub-nodes and edges linked to purely graphical elements (even with Note associated to another representation link)</h3>
+		<ul>
+			<li>This scenario is similar to scenario A but with more complex structure of elements.</li>
+			<li>Open diagram "scenarioB-diagramWithContainerDnDAndSameMapping"</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioB-diagramWithContainerDnDAndSameMapping-1-before.png"/>
+		</p>
+		<ul>
+			<li>Drag'n'drop the container "p11" to the container "p2"</li>
+			<li>
+				<strong>Expected</strong>: The notes are always linked to the moved elements.
+			</li>
+			<li>
+				<strong>Observed</strong>: The notes are no longer linked to the moved elements. "Ghost" note attachments exist after the drag'n'drop (caused by 
+				<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=581751">bugzilla 581751</a>.
+			</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioB-diagramWithContainerDnDAndSameMapping-2-after.png"/>
+		</p>
+		<h3 id="scenario-c-drag-n-drop-of-a-node-from-a-container-to-the-diagram-with-a-note-linked-to-this-node-the-mapping-is-not-the-same-before-and-after-the-drag-n-drop">Scenario C - Drag'n'drop of a Node from a container to the diagram, with a Note linked to this Node. The mapping is not the same before and after the drag'n'drop.</h3>
+		<ul>
+			<li>Open diagram "scenarioC-diagramWithNodeDnDAndMappingChange-simple"</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioC-diagramWithNodeDnDAndMappingChange-simple-1-before.png"/>
+		</p>
+		<ul>
+			<li>Drag'n'drop the node "ClassA" to the diagram</li>
+			<li>
+				<strong>Expected</strong>: The note "NoteOnNode" is always linked to the node "ClassA".
+			</li>
+			<li>
+				<strong>Observed</strong>: The note "NoteOnNode" is no longer linked to the node "ClassA".
+			</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioC-diagramWithNodeDnDAndMappingChange-simple-2-after.png"/>
+		</p>
+		<ul>
+			<li>This scenario can be the replayed with:</li>
+			<ul>
+				<li>a Container, an Element Based Edge or a Representation Based Edge instead of the Node,</li>
+				<li>a Representation Link or a Text instead of the Note</li>
+				<li>with the purely graphical element on source side or on target side</li>
+			</ul>
+		</ul>
+		<h3 id="scenario-d-on-an-unsynchronized-diagram-drag-n-drop-of-a-node-from-a-container-to-the-diagram-without-a-real-drag-n-drop-but-a-remove-of-the-view-the-expected-result-is-a-deletion-of-the-noteattachment">Scenario D - On an unsynchronized diagram, drag'n'drop of a Node from a container to the diagram, without a real drag'n'drop but a remove of the view. The expected result is a deletion of the NoteAttachment.</h3>
+		<ul>
+			<li>Open diagram "scenarioD-diagramWithFakeNodeDnD"</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioD-diagramWithFakeNodeDnD-1-before.png"/>
+		</p>
+		<ul>
+			<li>Drag'n'drop the node "ClassA" to the diagram</li>
+			<li>
+				<strong>Expected</strong>: The node "ClassA" no longer exists and the note "NoteOnNode" is always here. The note should be removed if the preference "Remove/hide note when the annotated element is removed/hidden" is checked.
+			</li>
+			<li>
+				<strong>Observed</strong>: OK, except if the preference is checked.
+			</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioD-diagramWithFakeNodeDnD-2-after.png"/>
+		</p>
+		<h3 id="scenario-e-drag-n-drop-of-a-container-from-model-explorer-view-that-changes-the-existing-hierarchy-in-the-diagram-the-impacted-elements-are-linked-to-purely-graphical-elements">Scenario E - Drag'n'drop of a Container from Model Explorer view that changes the existing hierarchy in the diagram, the impacted elements are linked to purely graphical elements</h3>
+		<ul>
+			<li>Open diagram "scenarioE-diagramWithUnsynchronizedHierarchy"</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioE-diagramWithUnsynchronizedHierarchy-1-before.png"/>
+		</p>
+		<ul>
+			<li>Drag'n'drop the package "p1-1" from the Model Explorer view to the diagram editor, in the package "p1"</li>
+			<li>
+				<strong>Expected</strong>: The package "p1-1" is created into the package "p1". The node "ClassA" is moved into the package "p1-1". The note "NoteOnNode" is always linked to the node "ClassA".
+			</li>
+			<li>
+				<strong>Observed</strong>: The note "NoteOnNode" is no longer linked to the node "ClassA".
+			</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioE-diagramWithUnsynchronizedHierarchy-2-after.png"/>
+		</p>
+		<ul>
+			<li>Select the package "p1-1" and delete it (Delete from Model). The delete is overridden in the VSM. It only deletes the corresponding view and moves the view corresponding to node "ClassA".</li>
+			<li>
+				<strong>Expected</strong>: The package "p1-1" is no longer visible in the diagram. The node "ClassA" is moved into the package "p1". The note "NoteOnNode" is always linked to the node "ClassA".
+			</li>
+			<li>
+				<strong>Observed</strong>: The note "NoteOnNode" is no longer linked to the node "ClassA".
+			</li>
+			<li>This scenario can be the replayed with:</li>
+			<ul>
+				<li>a Representation Link or a Text instead of the Note</li>
+				<li>with the purely graphical element on source side or on target side</li>
+			</ul>
+		</ul>
+		<h3 id="scenario-f-drag-n-drop-of-a-container-containing-a-note-from-a-container-to-the-diagram">Scenario F - Drag'n'drop of a Container containing a Note from a Container to the diagram</h3>
+		<ul>
+			<li>Open diagram "scenarioF-diagramWithContainerDnDAndSameMapping-simple"</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioF-diagramWithContainerDnDAndSameMapping-simple-1-before.png"/>
+		</p>
+		<ul>
+			<li>Drag'n'drop the package "p2" from "p1" to the diagram</li>
+			<li>
+				<strong>Expected</strong>: The note "NoteInsideContainer" is always visible.
+			</li>
+			<li>
+				<strong>Observed</strong>: The note "NoteInsideContainer" has been removed.
+			</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioF-diagramWithContainerDnDAndSameMapping-simple-2-after.png"/>
+		</p>
+		<ul>
+			<li>This scenario can be the replayed with:</li>
+			<ul>
+				<li>a Representation Link or a Text instead of the Note</li>
+			</ul>
+		</ul>
+		<h2 id="rcp-web-flavors-compatibility-and-interoperability">RCP/Web Flavors Compatibility and Interoperability</h2>
+		<p>This feature request concerns element inherited from GMF framework, so existing only on RCP side. So by definition, it does not concern Sirius Web.</p>
+		<h2 id="backward-compatibility-and-migration-paths">Backward Compatibility and Migration Paths</h2>
+		<p>This evolution does not change any API.</p>
+		<h3 id="metamodel-changes">Metamodel Changes</h3>
+		<p>There is no change to the Sirius metamodel. Only the behavior concerning the purely graphical elements is impacted.</p>
+		<h3 id="api-changes">API Changes</h3>
+		<p>The impacted code concerns internal refresh mechanisms, so no API will be concerned. For details, the main impacted classes will be:</p>
+		<ul>
+			<li>org.eclipse.sirius.diagram.ui.internal.refresh.diagram.DDiagramCanonicalSynchronizer</li>
+			<li>org.eclipse.sirius.diagram.ui.internal.refresh.AbstractCanonicalSynchronizer (the super class of the above one)</li>
+		</ul>
+		<h3 id="user-interface-changes">User Interface Changes</h3>
+		<p>Only the behavior concerning the purely graphical elements is impacted. There is no real user interface change.</p>
+		<h3 id="documentation-changes">Documentation Changes</h3>
+		<p>The New and Noteworthy documentation must described the new behavior.</p>
+		<h2 id="tests-and-non-regression-strategy">Tests and Non-regression strategy</h2>
+		<p>The impacted code is major and is called regularly, all the scenario of this specification must be covered by a specific test.</p>
+		<h2 id="implementation-choices-and-tradeoffs">Implementation choices and tradeoffs</h2>
+		<p>Only the scenarios described in this specification are guaranteed to be covered. The refresh mechanism is too complex to guarantee all scenario in generic way.</p>
+	</body>
+</html>
