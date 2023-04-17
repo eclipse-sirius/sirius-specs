@@ -10,7 +10,8 @@
 		<p>| Version | Status | Date       | Authors   | Changes           |
 			|---------|--------|------------|-----------|-------------------|
 			|    v0.1 |  DRAFT | 2023-04-14 |   lredor  | Initial version.  |
-			|    v0.2 |  DRAFT | 2023-04-18 |   lredor  | Amend scenarios.  |</p>
+			|    v0.2 |  DRAFT | 2023-04-18 |   lredor  | Amend scenarios.  |
+			|    v0.3 |  DRAFT | 2023-04-24 |   lredor  | Amend scenarios.  |</p>
 		<p>
 			<em>Relevant tickets</em>:
 		</p>
@@ -29,7 +30,7 @@
 			<code>Note</code>, a 
 			<code>Representation Link</code>, a 
 			<code>Text</code> or another 
-			<code>Note Attachment</code>) to another object. This object is most of the time a Sirius graphical element, which correspond to a semantic element. But it can also be another purely graphical element.
+			<code>Note Attachment</code>) to another object. This object is most of the time a Sirius graphical element, which correspond to a semantic element. But it can also be another purely graphical element. When a purely graphical element is linked to another with a note attachment, in this specification, we also talk about an annotation. And for the targeted element, we a	also talk about annotated element.
 		</p>
 		<p>After some change on the diagram, some "graphical elements without semantic link" can be lost without obvious reason for the end-user. Technically, these elements are sometimes removed because the original annotated Sirius graphical element has been removed. But according to the end-user, the Sirius graphical element is the same (even if technically, this is a new one, created by the Sirius refresh mechanism).</p>
 		<p>The below example is a simple case to clarify the problem.</p>
@@ -49,7 +50,7 @@
 		<p>
 			<img alt="Simple sample after drag&apos;n&apos;drop" title="Simple sample after drag&apos;n&apos;drop" border="0" src="images/SimpleSample-2-afterDnD.png"/>
 		</p>
-		<p>The above diagram is the current result after doing the drag'n'drop of "Class1" from the container "packageA" to the diagram. As you can see, the link between "NoteOnNode" and "Class1" has been lost. This is a typical sample of problem that this feature must resolve.</p>
+		<p>The above diagram is the current result after doing the drag'n'drop of "Class1" from the container "packageA" to the diagram. As you can see, the link between "NoteOnNode" and "Class1" has been lost. This is a typical sample of problem that this feature must resolve. For the end-user, the node representing "Class1" is the same (just moved from one place to another). But technically, it is a new node, the old node pointed by the note attachment no longer exists.</p>
 		<h2 id="detailed-specification">Detailed Specification</h2>
 		<p>When you perform certain actions on a diagram, multiple refreshes are technically involved:</p>
 		<ul>
@@ -70,7 +71,7 @@
 		<p>All the below scenarios used data available in 
 			<a href="https://git.eclipse.org/r/c/sirius/org.eclipse.sirius/+/201382">gerrit 201382</a>.
 		</p>
-		<h3 id="scenario-a-drag-n-drop-of-a-node-from-a-container-to-the-diagram-with-a-note-linked-to-this-node-the-mapping-is-the-same-before-and-after-the-drag-n-drop">Scenario A - Drag'n'drop of a Node from a container to the diagram, with a Note linked to this Node. The mapping is the same before and after the drag'n'drop.</h3>
+		<h3 id="scenario-a-drag-n-drop-of-an-annotated-node-from-a-container-to-the-diagram-the-mapping-is-the-same-before-and-after-the-drag-n-drop">Scenario A - Drag'n'drop of an annotated Node from a container to the diagram. The mapping is the same before and after the drag'n'drop.</h3>
 		<ul>
 			<li>Open diagram "scenarioA-diagramWithNodeDnDAndSameMapping-simple"</li>
 		</ul>
@@ -97,7 +98,7 @@
 				<li>with the purely graphical element on source side or on target side</li>
 			</ul>
 		</ul>
-		<h3 id="scenario-b-drag-n-drop-of-a-container-having-sub-nodes-and-edges-linked-to-purely-graphical-elements-even-with-note-associated-to-another-representation-link">Scenario B - Drag'n'drop of a Container having sub-nodes and edges linked to purely graphical elements (even with Note associated to another representation link)</h3>
+		<h3 id="scenario-b-drag-n-drop-of-a-container-having-annotated-sub-nodes-and-annotated-edges-even-with-note-associated-to-another-representation-link">Scenario B - Drag'n'drop of a Container having annotated sub-nodes and annotated edges (even with Note associated to another representation link)</h3>
 		<ul>
 			<li>This scenario is similar to scenario A but with more complex structure of elements.</li>
 			<li>Open diagram "scenarioB-diagramWithContainerDnDAndSameMapping"</li>
@@ -118,7 +119,7 @@
 		<p>
 			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioB-diagramWithContainerDnDAndSameMapping-2-after.png"/>
 		</p>
-		<h3 id="scenario-c-drag-n-drop-of-a-node-from-a-container-to-the-diagram-with-a-note-linked-to-this-node-the-mapping-is-not-the-same-before-and-after-the-drag-n-drop">Scenario C - Drag'n'drop of a Node from a container to the diagram, with a Note linked to this Node. The mapping is not the same before and after the drag'n'drop.</h3>
+		<h3 id="scenario-c-drag-n-drop-of-an-annotated-node-from-a-container-to-the-diagram-the-mapping-is-not-the-same-before-and-after-the-drag-n-drop">Scenario C - Drag'n'drop of an annotated Node from a container to the diagram. The mapping is not the same before and after the drag'n'drop.</h3>
 		<ul>
 			<li>Open diagram "scenarioC-diagramWithNodeDnDAndMappingChange-simple"</li>
 		</ul>
@@ -164,7 +165,7 @@
 		<p>
 			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioD-diagramWithFakeNodeDnD-2-after.png"/>
 		</p>
-		<h3 id="scenario-e-drag-n-drop-of-a-container-from-model-explorer-view-that-changes-the-existing-hierarchy-in-the-diagram-the-impacted-elements-are-linked-to-purely-graphical-elements">Scenario E - Drag'n'drop of a Container from Model Explorer view that changes the existing hierarchy in the diagram, the impacted elements are linked to purely graphical elements</h3>
+		<h3 id="scenario-e-change-the-existing-hierarchy-in-the-diagram-add-and-remove-a-container-level-the-impacted-elements-are-annotated-this-scenario-uses-drag-n-drop-from-model-explorer-view-and-an-override-of-delete-tool">Scenario E - Change the existing hierarchy in the diagram (add and remove a container level). The impacted elements are annotated. This scenario uses drag'n'drop from Model Explorer view and an override of delete tool.</h3>
 		<ul>
 			<li>Open diagram "scenarioE-diagramWithUnsynchronizedHierarchy"</li>
 		</ul>
@@ -220,6 +221,110 @@
 			<li>This scenario can be the replayed with:</li>
 			<ul>
 				<li>a Representation Link or a Text instead of the Note</li>
+			</ul>
+		</ul>
+		<h3 id="scenario-g-drag-n-drop-of-an-annotated-node-with-an-annotated-border-node-having-the-same-semantic-element-the-node-and-the-border-node-have-the-same-mapping-before-and-after-the-drag-n-drop">Scenario G - Drag'n'drop of an annotated Node with an annotated Border node having the same semantic element. The Node and the border node have the same mapping before and after the drag'n'drop.</h3>
+		<ul>
+			<li>Open diagram "scenarioG-diagramWithNodeAndBorderNodeDnDAndSameMapping-simple"</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioG-diagramWithNodeAndBorderNodeDnDAndSameMapping-simple-1-before.png"/>
+		</p>
+		<ul>
+			<li>Drag'n'drop the node "ClassA" to the diagram</li>
+			<li>
+				<strong>Expected</strong>: The note "NoteOnNode" is always linked to the node "ClassA". The note "NoteOnBorderNode" is always linked to the border node of "ClassA".
+			</li>
+			<li>
+				<strong>Observed</strong>: The notes are no longer linked.
+			</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioG-diagramWithNodeAndBorderNodeDnDAndSameMapping-simple-2-after.png"/>
+		</p>
+		<ul>
+			<li>This scenario can be the replayed with:</li>
+			<ul>
+				<li>a Representation Link or a Text instead of the Note</li>
+				<li>with the purely graphical element on source side or on target side</li>
+			</ul>
+		</ul>
+		<h3 id="scenario-h-drag-n-drop-of-an-annotated-node-with-an-annotated-border-node-having-the-same-semantic-element-the-node-and-the-border-node-have-not-the-same-mapping-before-and-after-the-drag-n-drop">Scenario H - Drag'n'drop of an annotated Node with an annotated Border node having the same semantic element. The Node and the border node have not the same mapping before and after the drag'n'drop.</h3>
+		<ul>
+			<li>Open diagram "scenarioH-diagramWithNodeAndBorderNodeDnDAndMappingChange-simple"</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioH-diagramWithNodeAndBorderNodeDnDAndMappingChange-simple-1-before.png"/>
+		</p>
+		<ul>
+			<li>Drag'n'drop the node "ClassA" to the diagram</li>
+			<li>
+				<strong>Expected 1</strong>: The note "NoteOnNode" is no longer linked to the node "ClassA". The note "NoteOnBorderNode" is no longer linked to the border node of "ClassA". It is a case with several element created with the same semantic element as target and no way to distinguish them.
+			</li>
+			<li>
+				<strong>Expected 2</strong>: If the preference "Remove/hide note when the annotated element is removed/hidden" is checked, the notes must be deleted.
+			</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioH-diagramWithNodeAndBorderNodeDnDAndMappingChange-simple-2-after.png"/>
+		</p>
+		<ul>
+			<li>This scenario can be the replayed with:</li>
+			<ul>
+				<li>a Representation Link or a Text instead of the Note</li>
+				<li>with the purely graphical element on source side or on target side</li>
+			</ul>
+		</ul>
+		<h3 id="scenario-i-drag-n-drop-a-border-node-with-an-annotated-edge">Scenario I - Drag'n'drop a border node with an annotated Edge.</h3>
+		<ul>
+			<li>Open diagram "scenarioI-diagramWithReconnect-simple"</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioI-diagramWithReconnect-simple-1-before.png"/>
+		</p>
+		<ul>
+			<li>Drag'n'drop the border node "ClassB" from "p2" to "p3"</li>
+			<li>
+				<strong>Expected</strong>: The note "NoteOnEdge" is always linked to the edge from border node "ClassA" to border node "ClassB".
+			</li>
+			<li>
+				<strong>Observed</strong>: The note "NoteOnEdge" is no longer linked.
+			</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioI-diagramWithReconnect-simple-2-after.png"/>
+		</p>
+		<ul>
+			<li>This scenario can be the replayed with:</li>
+			<ul>
+				<li>a Representation Link or a Text instead of the Note</li>
+				<li>with the purely graphical element on source side or on target side</li>
+			</ul>
+		</ul>
+		<h3 id="scenario-j-reconnect-an-annotated-edge">Scenario J - Reconnect an annotated Edge.</h3>
+		<ul>
+			<li>Open diagram "scenarioI-diagramWithReconnect-simple"</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioI-diagramWithReconnect-simple-1-before.png"/>
+		</p>
+		<ul>
+			<li>Reconnect the edge "elementMapping" from "ClassB" to "ClassC"</li>
+			<li>
+				<strong>Expected</strong>: The note "NoteOnEdge" is always linked to the edge.
+			</li>
+			<li>
+				<strong>Observed</strong>: The note "NoteOnEdge" is no longer linked.
+			</li>
+		</ul>
+		<p>
+			<img alt="Corresponding diagram" title="Corresponding diagram" border="0" src="images/scenarioJ-diagramWithReconnect-simple-2-after.png"/>
+		</p>
+		<ul>
+			<li>This scenario can be the replayed with:</li>
+			<ul>
+				<li>a Representation Link or a Text instead of the Note</li>
+				<li>with the purely graphical element on source side or on target side</li>
 			</ul>
 		</ul>
 		<h2 id="rcp-web-flavors-compatibility-and-interoperability">RCP/Web Flavors Compatibility and Interoperability</h2>
