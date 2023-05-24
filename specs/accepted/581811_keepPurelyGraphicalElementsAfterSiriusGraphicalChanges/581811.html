@@ -7,11 +7,12 @@
 		<h1 id="sirius-evolution-specification-keep-graphical-elements-without-semantic-link-after-a-sirius-graphical-change">Sirius Evolution Specification: Keep "graphical elements without semantic link" after a Sirius graphical change</h1>
 		<h2 id="preamble">Preamble</h2>
 		<p>_Summary_: The goal of this feature request is to keep the "graphical elements without semantic link" after a Sirius graphical change. The "graphical elements without semantic link" are the notes, the representation links, the texts and the note attachments.</p>
-		<p>| Version | Status | Date       | Authors   | Changes           |
-			|---------|--------|------------|-----------|-------------------|
-			|    v0.1 |  DRAFT | 2023-04-14 |   lredor  | Initial version.  |
-			|    v0.2 |  DRAFT | 2023-04-18 |   lredor  | Amend scenarios.  |
-			|    v0.3 |  DRAFT | 2023-04-24 |   lredor  | Amend scenarios.  |</p>
+		<p>| Version | Status    | Date       | Authors   | Changes           |
+			|---------|-----------|------------|-----------|-------------------|
+			|    v0.1 |  DRAFT    | 2023-04-14 |   lredor  | Initial version.  |
+			|    v0.2 |  DRAFT    | 2023-04-18 |   lredor  | Amend scenarios.  |
+			|    v0.3 |  DRAFT    | 2023-04-24 |   lredor  | Amend scenarios.  |
+			|    v1.0 |  ACCEPTED | 2023-05-24 |   lredor  | Add tradeoff for Text behavior according to preference.  |</p>
 		<p>
 			<em>Relevant tickets</em>:
 		</p>
@@ -347,5 +348,8 @@
 		<p>The impacted code is major and is called regularly, all the scenario of this specification must be covered by a specific test.</p>
 		<h2 id="implementation-choices-and-tradeoffs">Implementation choices and tradeoffs</h2>
 		<p>Only the scenarios described in this specification are guaranteed to be covered. The refresh mechanism is too complex to guarantee all scenario in generic way.</p>
+		<p>The Text has not the same behavior that Note accordingly to the preference "Remove/hide note when the annotated element is removed/hidden". Indeed, this preference has been added in 2011 only for Note (see corresponding 
+			<a href="https://www.eclipse.org/sirius/doc/user/diagrams/Diagrams.html#GlobalPreferences">documentation</a>. Homogenization of the behavior between Note and Test is out of scope of this issue.
+		</p>
 	</body>
 </html>
