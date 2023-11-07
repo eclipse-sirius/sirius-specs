@@ -1,0 +1,153 @@
+h1. Sirius Evolution Specification: Homogenize color-changing menus
+
+h2. Preamble
+
+_Summary_: This document describe the new feature to homogenize color-change menus and make the color change feature more accessible.
+
+
+|_. Version |_. Status |_. Date        |_. Authors |_. Changes |
+| v0.1        | DRAFT    | 2023-11-06 | gplouhinec    | Initial version. |
+| v1.0        | ACCEPTED    | 2023-12-18 | gplouhinec    | Persist colors in aird model, add tooltips and Drag and Drop colors in palette. |
+
+_Relevant tickets_ :
+
+* "#152 - Color-change menus are inconsistent and seem unusable for some users.":https://github.com/eclipse-sirius/sirius-desktop/issues/152
+
+h2. Introduction
+
+Currently, element colors can be modified via the diagram toolbar, or via the Properties view in the Appearance tab. It is therefore possible to modify: 
+* The element color
+* The font color
+* The border color
+
+!images/all_menus.png!
+
+The behavior between the buttons in the Properties view and the diagram toolbar is not consistent:
+* In the diagram toolbar, we have a drop-down menu whereas we have a color palette in the Properties view. </br>!images/drop_down_menu.png! !images/color_palette.png!
+* Via the diagram toolbar, if you click on "More Colors...", the dialog opens at the top left, whereas it opens at the cursor position in the Properties view with the "Custom..." button. </br>!images/top_left_position_dialog.png! !images/cursor_location_dialog.png!
+* If the user defines custom colors, these are deleted when Eclipse is restarted.
+* The colors suggested between the drop-down menu and the palette are not the same.
+* It's not clear which colors are defined in the VSM palette, which have been created by the user, or which are Sirius default colors.
+
+h2. Detailed Specification
+
+The idea of this improvement is to homogenize the color-change menus and make them more accessible.
+
+Several improvements are proposed to homogenize the menus: 
+* The color palette will be used instead of the drop-down menu in the Properties View and diagram toolbar menus.
+* The color customization dialog will be opened at the position of the "More..." button, rather than at the top left of the Eclipse window. 
+* User-customized colors will be persisted in the aird file as EAnnotations, in order to retrieve them after restarting Eclipse.
+* The colors suggested in the menus will be the same via the Properties View and the diagram toolbar.
+
+A few improvements are proposed to make these menus more accessible:
+* Colors will be separated into different sections and displayed in order of importance and frequency of use: 
+** The last colors used by the user
+** Colors customized by the user
+** Colors defined in the VSM palette
+** Sirius default colors
+
+h3. API Changes
+
+The @org.eclipse.sirius.diagram.ui.tools.api.color.ColorManager@ interface will probably evolve to get and modify preferred colors of each category. 
+The @org.eclipse.sirius.diagram.ui.tools.api.preferences.SiriusDiagramUiPreferencesKeys@ enum may probably evolve to handle preferred colors of each category.
+
+h3. User Interface
+
+h4. Color Palette design
+
+* The palette will be redesigned to include labels and separators:</br>!images/sketch_new_color_palette.png!
+
+* 4 color categories will be defined, with a separator:
+** @Last used@
+** @Customized@
+** @Suggested@
+** @Default@
+
+* A maximum of 10 different colors will be suggested for each of the 4 categories.
+
+* Except for the last used colors category, the remaining 3 categories will have a "More ..." button to browse the category's other existing colors.
+
+h4. "More..." buttons
+
+* When clicking on the "@More...@" button of "Customized" category, a dialog @Displayed colors@ appears:</br>!images/all_customized_colors_dialog.png!
+** All customized colors are displayed in "@All customized colors@" group. All these colors are persisted in the aird file as EAnnotations.
+*** The color of the element selected on the diagram should be selected by default in the "@All customized colors@" list. If the color does not exist in this list, it must be added and selected.
+*** When clicking on "@Add@", the system's color customization dialog is invoked, when a color is selected in the system dialog, the color is added to "All customized colors".</br>!images/system_color_selection_dialog.png!
+*** When clicking on "@Remove@", the selected color is removed.
+*** Colors can be drag and dropped to reorder them in "All customized colors".
+** @Import@ and @Export@ buttons invoke a file system navigation dialog to load an existing color configuration, or export the current configuration. This feature allows users to change color configuration at any time as required. This feature is not a priority and may be proposed in future versions of Sirius.
+
+* When clicking on the "@More...@" button of "Suggested" category, a dialog @Displayed colors@ appears:</br>!images/all_VSM-defined_colors_dialog.png!
+** In the "@Displayed suggestions@" group, a subset of colors of the group below is displayed. These colors are persisted in the aird file as EAnnotations.
+*** When the user select a color in "Displayed suggestions", "Remove" button is enabled.
+*** When clicking on "@Remove@", the selected color is removed from "Displayed suggestions"
+*** A color can be drag and dropped from left to right or right to left in "Displayed suggestions" to change the order of these colors.
+** All colors defined in the palette of the VSM are displayed in "@All suggestions@" group.
+*** When double-clicking on a color in "All suggestions", the selected color is added to the last place of "Displayed suggestions" if there are less than 10 colors in "Displayed suggestions".
+*** A color can be drag and dropped from "All suggestions" to "Displayed suggestions" if there are less than 10 colors in "Displayed suggestions".
+
+* When clicking on the "@More...@" button of "Default" category, a dialog @Displayed colors@ appears:</br>!images/all_Sirius_default_colors_dialog.png!
+** In the "@Displayed default colors@" group, a subset of colors of the group below is displayed. These colors are persisted in the aird file as EAnnotations.
+*** When the user select a color in "Displayed default colors", "Remove" button is enabled.
+*** When clicking on "@Remove@", the selected color is removed from "Displayed default colors"
+*** A color can be drag and dropped from left to right or right to left in "Displayed default colors" to change the order of these colors.
+** All colors provided by Sirius are displayed in "@All default colors@" group.
+*** When double-clicking on a color in "All default colors", the selected color is added to the last place of "Displayed default colors" if there are less than 10 colors in "Displayed default colors".
+*** A color can be drag and dropped from "All default colors" to "Displayed default colors" if there are less than 10 colors in "Displayed default colors".
+
+For each of these dialogs, if a color is selected and the user click the "OK" button, the selected color is added to the "Last used colors" category and applied to the color feature of the diagram element.
+
+h4. Tooltips
+
+* The tooltip for each color will display its RGB code rather than its name.</br>!images/RGB_tooltip.png!
+* For the "Font Color" menu, tooltip "@Font Color@" will be added for the diagram toolbar menu, Appearance Properties View menu, popup-menu and Diagram-window-menu.
+* For the "Fill Color" menu, tooltip "@Fill Color@" will be added for the diagram toolbar menu, Appearance Properties View menu, popup-menu and Diagram-window-menu.
+* For the "Line Color" menu, tooltip "@Line Color@" will be added for the diagram toolbar menu, Appearance Properties View menu, popup-menu and Diagram-window-menu.
+* In the color selection dialog specific to customized colors:
+** the "Import..." button will have the tooltip "@Import a color configuration to replace the existing one.@".
+** the "Export..." button will have the tooltip "@Export current configuration.@".
+** the "Add" button will have the tooltip "@Add a custom color using the system color configuration tool.@".
+* In the color selection dialog, the "Remove" button will have the tooltip "@Removes a preferred color.@".
+* In the color selection dialog, a tooltip "@Drag and drop a color from "All colors" to "Displayed colors" to add it to the list of displayed colors.@" will be added to "All colors" group.
+* In the color selection dialog, a tooltip "@Drag and drop a color to reorder the list of displayed colors.@" will be added to "Displayed colors" group.
+* In the color palette, for "Last used" category, tooltip "@List of last colors used. Not persisted in model.@" will be added.
+* In the color palette, for "Customized" category, tooltip "@List of customized colors. Persisted in model.@" will be added.
+* In the color palette, for "Suggested" category, tooltip "@List of suggested colors. Persisted in model.@" will be added.
+* In the color palette, for "Default" category, tooltip "@List of default colors. Persisted in model.@" will be added.
+
+h4. Preference page
+
+* The checkbox "Display viewpoint colors" of the preference page Sirius > Sirius Diagram > Appearance may be removed if no longer required.
+
+h4. Other menus
+
+Other menus related to the same features need to be reworked with the color palette and verified during testing.
+
+* The popup menu, accessible via a right-click on a diagram element (Font Color, Fill Color, Line Color):</br>!images/popup_menu_change_color.png!
+* The window menu, accessible when a diagram element is selected, under "Diagram" menu. The "Font Color" menu is missing here, it will be added to homogenize menus. </br>!images/window_menu_change_color.png!
+
+h5. Memorize custom color in the model
+
+A new popup menu "@Memorize custom color in the model@" in a new section will be added. It will be accessible via a right-click on a diagram element, Above the "Align" menu. This menu will add the color of the selection to the Customized colors category, at first position.
+
+h4. Other user interface changes
+
+* Menus will be reordered to always follow this order: *Font Color, Fill Color, Line Color*
+** In the diagram toolbar, the "Font" menu will be placed before "Bold Font Style" and "Italic Font Style" to follow the same order as other menus.
+** In the Appearance Properties View, Line Color and Fill Color will be swapped.
+** In the popup menu, Font Color and Fill Color will be swapped.
+* The colors displayed in the group "All * colors" of dialogs will be sorted.
+
+h3. Documentation
+
+The user documentation of the Appearance preference page will be updated with the deleted "Display viewpoint colors" checkbox screenshot and text.
+The user documentation for the color and font properties of diagram elements must be completed.
+
+h2. Tests and Non-regression strategy
+
+Automatic tests cannot be run in the Properties view. It is also not possible to test system dialog boxes.
+
+Junit tests will be developed to test the new APIs.
+SWTBot tests will be developed to test interactions with the diagram toolbar, popup menu and Eclipse window menu.
+
+Existing tests that change the color of diagram elements will be adapted.
