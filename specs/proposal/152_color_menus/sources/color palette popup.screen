@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:ColorPicker" id="1" x="216" y="104" measuredWidth="33" measuredHeight="23"/>
+  <widgets xsi:type="model:Panel" id="3" x="216" y="127" width="369" height="186" measuredWidth="369" measuredHeight="186"/>
+  <widgets xsi:type="model:HLine" id="4" x="274" y="139" width="301" measuredWidth="301" measuredHeight="6"/>
+  <widgets xsi:type="model:Panel" id="9" x="220" y="150" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#f00"/>
+  <widgets xsi:type="model:Label" id="10" x="220" y="130" text="Last used" measuredWidth="55" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="11" x="250" y="150" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#f90"/>
+  <widgets xsi:type="model:Panel" id="12" x="280" y="150" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#ff0"/>
+  <widgets xsi:type="model:Panel" id="13" x="310" y="150" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#0f0"/>
+  <widgets xsi:type="model:Panel" id="14" x="340" y="150" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#05fa74"/>
+  <widgets xsi:type="model:Panel" id="19" x="370" y="150" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#0ff"/>
+  <widgets xsi:type="model:Panel" id="20" x="400" y="150" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#00f"/>
+  <widgets xsi:type="model:Panel" id="21" x="430" y="150" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#90f"/>
+  <widgets xsi:type="model:Panel" id="22" x="460" y="150" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#f0f"/>
+  <widgets xsi:type="model:Panel" id="23" x="490" y="150" width="25" height="25" measuredWidth="25" measuredHeight="25"/>
+  <widgets xsi:type="model:HLine" id="24" x="288" y="181" width="287" measuredWidth="287" measuredHeight="6"/>
+  <widgets xsi:type="model:Panel" id="25" x="220" y="192" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#f4cccc"/>
+  <widgets xsi:type="model:Label" id="26" x="220" y="172" text="Customized" measuredWidth="69" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="27" x="250" y="192" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#fce5cd"/>
+  <widgets xsi:type="model:Panel" id="28" x="280" y="192" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#fff2cc"/>
+  <widgets xsi:type="model:Panel" id="29" x="310" y="192" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#d9ead3"/>
+  <widgets xsi:type="model:Panel" id="30" x="340" y="192" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#d0e0e3"/>
+  <widgets xsi:type="model:Panel" id="31" x="370" y="192" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#cfe2f3"/>
+  <widgets xsi:type="model:Panel" id="32" x="400" y="192" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#d0e0e3"/>
+  <widgets xsi:type="model:Panel" id="33" x="430" y="192" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#d9d2e9"/>
+  <widgets xsi:type="model:Panel" id="34" x="460" y="192" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#ead1dc"/>
+  <widgets xsi:type="model:HLine" id="36" x="280" y="224" width="295" measuredWidth="295" measuredHeight="6"/>
+  <widgets xsi:type="model:Panel" id="37" x="220" y="235" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#c00"/>
+  <widgets xsi:type="model:Label" id="38" x="220" y="215" text="Suggested" measuredWidth="61" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="39" x="250" y="235" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#e69138"/>
+  <widgets xsi:type="model:Panel" id="40" x="280" y="235" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#f1c232"/>
+  <widgets xsi:type="model:Panel" id="41" x="310" y="235" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#6aa84f"/>
+  <widgets xsi:type="model:Panel" id="42" x="340" y="235" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#6aa84f"/>
+  <widgets xsi:type="model:Panel" id="43" x="370" y="235" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#3d85c6"/>
+  <widgets xsi:type="model:Panel" id="44" x="400" y="235" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#0b5394"/>
+  <widgets xsi:type="model:HLine" id="48" x="260" y="267" width="315" measuredWidth="315" measuredHeight="6"/>
+  <widgets xsi:type="model:Panel" id="49" x="220" y="278" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#900"/>
+  <widgets xsi:type="model:Label" id="50" x="220" y="258" text="Default" measuredWidth="44" measuredHeight="23">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="51" x="250" y="278" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#b45f06"/>
+  <widgets xsi:type="model:Panel" id="52" x="280" y="278" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#bf9000"/>
+  <widgets xsi:type="model:Panel" id="53" x="310" y="278" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#38761d"/>
+  <widgets xsi:type="model:Panel" id="54" x="340" y="278" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#38761d"/>
+  <widgets xsi:type="model:Panel" id="55" x="370" y="278" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#134f5c"/>
+  <widgets xsi:type="model:Panel" id="56" x="400" y="278" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#0b5394"/>
+  <widgets xsi:type="model:Panel" id="57" x="430" y="278" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#351c75"/>
+  <widgets xsi:type="model:Panel" id="58" x="460" y="278" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#741b47"/>
+  <widgets xsi:type="model:Panel" id="59" x="490" y="278" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#444"/>
+  <widgets xsi:type="model:Button" id="83" x="520" y="278" text="More..." measuredWidth="57" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="85" x="520" y="235" text="More..." measuredWidth="57" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="86" x="520" y="192" text="More..." measuredWidth="57" measuredHeight="25">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

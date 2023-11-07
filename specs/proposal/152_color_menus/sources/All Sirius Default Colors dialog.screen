@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="42" x="50" y="32" width="334" height="289" text="Displayed colors" measuredWidth="334" measuredHeight="289"/>
+  <widgets xsi:type="model:Button" id="43" x="227" y="282" width="70" text="OK" measuredWidth="70" measuredHeight="25" state="disabled">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="44" x="303" y="282" width="70" text="Cancel" measuredWidth="70" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Group" id="3" x="61" y="160" width="312" height="116" text="All default colors" measuredWidth="312" measuredHeight="116">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="4" x="70" y="211" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#c00"/>
+  <widgets xsi:type="model:Panel" id="5" x="100" y="211" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#e69138"/>
+  <widgets xsi:type="model:Panel" id="6" x="130" y="211" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#f1c232"/>
+  <widgets xsi:type="model:Panel" id="7" x="160" y="211" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#6aa84f"/>
+  <widgets xsi:type="model:Panel" id="8" x="190" y="211" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#45818e"/>
+  <widgets xsi:type="model:Panel" id="9" x="220" y="211" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#134f5c"/>
+  <widgets xsi:type="model:Panel" id="10" x="250" y="211" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#674ea7"/>
+  <widgets xsi:type="model:Panel" id="11" x="280" y="211" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#a64d79"/>
+  <widgets xsi:type="model:Panel" id="12" x="310" y="211" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#741b47"/>
+  <widgets xsi:type="model:Panel" id="13" x="340" y="211" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#ccc"/>
+  <widgets xsi:type="model:Panel" id="24" x="70" y="243" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#f00"/>
+  <widgets xsi:type="model:Panel" id="25" x="100" y="243" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#f90"/>
+  <widgets xsi:type="model:Panel" id="26" x="130" y="243" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#ff0"/>
+  <widgets xsi:type="model:Panel" id="27" x="160" y="243" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#0f0"/>
+  <widgets xsi:type="model:Panel" id="28" x="190" y="243" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#05fa74"/>
+  <widgets xsi:type="model:Panel" id="29" x="220" y="243" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#0ff"/>
+  <widgets xsi:type="model:Panel" id="32" x="70" y="179" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#900"/>
+  <widgets xsi:type="model:Panel" id="33" x="100" y="179" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#b45f06"/>
+  <widgets xsi:type="model:Panel" id="34" x="130" y="179" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#bf9000"/>
+  <widgets xsi:type="model:Panel" id="35" x="160" y="179" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#38761d"/>
+  <widgets xsi:type="model:Panel" id="36" x="190" y="179" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#38761d"/>
+  <widgets xsi:type="model:Panel" id="37" x="220" y="179" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#134f5c"/>
+  <widgets xsi:type="model:Panel" id="38" x="250" y="179" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#0b5394"/>
+  <widgets xsi:type="model:Panel" id="39" x="280" y="179" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#351c75"/>
+  <widgets xsi:type="model:Panel" id="40" x="310" y="179" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#741b47"/>
+  <widgets xsi:type="model:Panel" id="41" x="340" y="179" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#444"/>
+  <widgets xsi:type="model:Group" id="60" x="61" y="64" width="312" height="84" text="Displayed default colors" measuredWidth="312" measuredHeight="84">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="61" x="304" y="113" text="Remove" measuredWidth="63" measuredHeight="25" state="disabled">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Panel" id="62" x="71" y="81" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#900"/>
+  <widgets xsi:type="model:Panel" id="63" x="101" y="81" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#b45f06"/>
+  <widgets xsi:type="model:Panel" id="64" x="131" y="81" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#bf9000"/>
+  <widgets xsi:type="model:Panel" id="65" x="161" y="81" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#38761d"/>
+  <widgets xsi:type="model:Panel" id="66" x="191" y="81" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#38761d"/>
+  <widgets xsi:type="model:Panel" id="67" x="221" y="81" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#134f5c"/>
+  <widgets xsi:type="model:Panel" id="68" x="251" y="81" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#0b5394"/>
+  <widgets xsi:type="model:Panel" id="69" x="281" y="81" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#351c75"/>
+  <widgets xsi:type="model:Panel" id="70" x="311" y="81" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#741b47"/>
+  <widgets xsi:type="model:Panel" id="71" x="341" y="81" width="25" height="25" measuredWidth="25" measuredHeight="25" background="#444"/>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>
