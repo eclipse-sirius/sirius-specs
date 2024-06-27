@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	</head>
+	<body>
+		<h1 id="SiriusEvolutionSpecificationPalettecustomizationenhancements">Sirius Evolution Specification: Palette customization enhancements</h1>
+		<h2 id="Preamble">Preamble</h2>
+		<p>
+			<em>Summary</em>: This document describe the existing options to customize the layout of the Sirius palette, lists the issues identified with these tools, and provides suggestions for improvements.
+		</p>
+		<table>
+			<tr>
+				<th>Version</th>
+				<th>Status</th>
+				<th>Date</th>
+				<th>Authors</th>
+				<th>Changes</th>
+			</tr>
+			<tr>
+				<td>v0.1</td>
+				<td>DRAFT</td>
+				<td>2024-06-27</td>
+				<td>gplouhinec</td>
+				<td>Initial version.</td>
+			</tr>
+		</table>
+		<p>
+			<em>Relevant tickets</em> :
+		</p>
+		<ul>
+			<li>
+				<a href="https://github.com/eclipse-sirius/sirius-desktop/issues/428">#428 &#8211; Palette customization improvements</a>
+			</li>
+		</ul>
+		<h2 id="Introduction">Introduction</h2>
+		<h3 id="Existingtools">Existing tools</h3>
+		<p>Currently, the layout Sirius palette can be customized with several menus and options, available with a right click:</br> 
+			<img border="0" src="images/palette_right_click.png"/>
+		</p>
+		<ul>
+			<li>
+				<strong>Layout</strong> menu is used to modify the layout of menus and buttons. 4 possible layouts: Columns, List, Icons only, Details:</br> 
+				<img border="0" src="images/columns_layout.png"/> 
+				<img border="0" src="images/list_layout.png"/> 
+				<img border="0" src="images/icons_only_layout.png"/> 
+				<img border="0" src="images/details_layout.png"/>
+			</li>
+			<li>
+				<strong>Use Large Icons</strong> menu display large icons. This currently only works with buttons in the palette header.</br> 
+				<img border="0" src="images/use_large_icons_result_menu.png"/>
+			</li>
+			<li>
+				<strong>Customize...</strong> menu invokes a dialog &#171;Customize Palette&#187; to rename a section or a tool, providing a description or hiding an item. Note that the name if filled with the label of the corresponding tool defined in the VSM, and the description with the Documentation tab of the tool.</br> 
+				<img border="0" src="images/customize_palette_dialog.png"/>
+				<ul>
+					<li>
+						<strong>Hide</strong>: When checked, this option hide the tool or tool section in the palette. This allows the user to limit the number of tools displayed in the palette.
+					</li>
+					<li>
+						<strong>Open drawer at start-up</strong>: When checked, this option automatically opens the drawer (tool section) specified in the palette when the editor is launched. This means that the contents of this drawer will be visible as soon as the editor is opened, avoiding the need for the user to click to open it manually.
+					</li>
+					<li>
+						<strong>Pin drawer at start-up</strong>: If checked, this option keeps the specified drawer  (tool section) open and pinned when opened. This prevents the drawer from closing automatically if the user clicks elsewhere. In other words, the drawer will always remain open as long as this option is activated, facilitating rapid access to the tools contained in this drawer without the need to constantly reopen it.
+					</li>
+				</ul>
+			</li>
+			<li>
+				<strong>Settings...</strong> menu invokes a dialog &#171;Palette Settings&#187; to change the font of tools displayed in the palette, modify the layout (same options as described above) and some other drawer options:</br> 
+				<img border="0" src="images/palette_settings_dialog.png"/>
+				<ul>
+					<li>
+						<strong>Always close when opening another drawer</strong>: This option, if checked, will cause a drawer to close automatically as soon as another drawer is opened. This keeps the interface clean and avoids cluttering the space with several drawers open simultaneously.
+					</li>
+					<li>
+						<strong>Close automatically when there is not enough room</strong>: This option, if checked, automatically closes drawers when there is not enough available space to display all open drawers. This helps optimize space utilization and prevent the interface from becoming overloaded.
+					</li>
+					<li>
+						<strong>Never close</strong>: This option, if checked, keeps all drawers open regardless of available space or the opening of other drawers. This can be useful if the user wishes to have access to all open drawers at the same time, without them closing automatically.
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h3 id="Identifiedissues">Identified issues</h3>
+		<ol>
+			<li>Modifications made via the &#171;Customize Palette&#187; dialog are persisted but not properly used by the Sirius palette implementation. As a result, changes made are lost each time the diagram is closed.</li>
+			<li>When you modify the name or description of a tool via the &#171;Customize Palette&#187; dialog , a DOMException is thrown.</li>
+			<li>The &#171;Use Large Icons&#187; option currently only works with buttons in the palette header. All palette icons should be affected.</li>
+		</ol>
+		<h2 id="Specification">Specification</h2>
+		<h3 id="Goals">Goals</h3>
+		<ul>
+			<li>Modifications made in the &#171;Customize Palette&#187; dialog are correctly persisted, changes are visible when the dialog is validated, and they are always visible when the session is restarted or Eclipse is reopened.</li>
+			<li>The DOMException error will be identified and resolved, so no more errors in the error log when the &#171;Customize Palette&#187; dialog is closed.</li>
+			<li>The &#171;Use large icons&#187; option will work on all palette icons, not just header icons.</li>
+		</ul>
+		<h3 id="Quickanalysis">Quick analysis</h3>
+		<ol>
+			<li>Options are persisted in 
+				<code>org.eclipse.gmf.runtime.gef.ui.palette.customize.PaletteCustomizerEx.save()</code>, when there is no DOMException, they are well persisted, but not used by Sirius. Tools in Sirius are configured in 
+				<code>org.eclipse.sirius.diagram.ui.tools.internal.palette.PaletteManagerImpl.updateContainer(Session, DDiagram, PaletteContainer, List&lt;? extends ToolInstance&gt;)</code>.
+			</li>
+			<li>For the DOMException, it is thrown because the id set to the palette entry in 
+				<code>org.eclipse.sirius.diagram.ui.tools.internal.palette.PaletteManagerImpl.addElementToContainer(PaletteContainer, ToolEntry, Option&lt;PaletteEntry&gt;)</code> is an EMF URI, and in 
+				<code>org.eclipse.gmf.runtime.gef.ui.palette.customize.PaletteCustomizerEx.save()</code> &gt; 
+				<code>org.eclipse.gmf.runtime.gef.ui.palette.customize.PaletteCustomizerEx.getMementoForEntry(IMemento, PaletteEntry)</code>, there is a check that the ID is a valid &#171;XML format&#187;, which is not the case. See 
+				<code>com.sun.org.apache.xerces.internal.util.XMLChar.isValidName(String)</code>
+			</li>
+		</ol>
+		<h3 id="APIChanges">API Changes</h3>
+		<p>The 
+			<code>org.eclipse.sirius.diagram.ui.tools.internal.palette.PaletteManagerImpl</code> class is an internal class; no API changes.
+		</p>
+		<h3 id="Documentation">Documentation</h3>
+		<p>We&#8217;ll add a section to the doc explaining what the palette customization menus are for, and what is and isn&#8217;t supported.</p>
+		<h2 id="TestsandNonregressionstrategy">Tests and Non-regression strategy</h2>
+		<p>Manual tests will be written.</p>
+	</body>
+</html>
